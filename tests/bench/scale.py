@@ -9,7 +9,7 @@ run of new rows, a replay dry run of the last 4096 stored rows, a real 4096-row 
 `project --map blood_phenoage` and `maps select`, repeated `--reps` times; and, where asked, a cold index rebuild.
 
 Rows are identical-valued readings that differ only in their origin ordinal (`record_id`), alternating a mapped glucose
-code and an unmapped heart-rate code, one reading per minute from 2017-01-01 (so histories reach ~9.5 years per 5M rows),
+code and an unmapped heart-rate code, one reading per `--step-seconds` (default a minute, so histories reach ~9.5 years per 5M rows) from 2017-01-01,
 plus a few full PhenoAge panels so the derived coordinate has values. Nothing here is real or personal.
 """
 
@@ -36,9 +36,12 @@ PHENO = [("1751-7", "g/L", 45.0), ("2160-0", "umol/L", 80.0), ("2345-7", "mmol/L
          ("787-2", "fL", 90.0), ("788-0", "%", 13.0), ("6768-6", "U/L", 70.0), ("6690-2", "10*3/uL", 6.0)]
 
 
+STEP_SECONDS = 60  # seconds between consecutive readings (--step-seconds)
+
+
 def reading(i: int) -> dict:
     mapped = i % 2 == 0
-    at = (T0 + timedelta(minutes=i)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    at = (T0 + timedelta(seconds=i * STEP_SECONDS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     row = {"kind": "measurement", "original_text": "synthetic glucose" if mapped else "synthetic heart rate", "effective_at": at,
            "value_quantity": 5.0 if mapped else 62.0, "unit": "mmol/L" if mapped else "/min",
            "code": {"system": "loinc", "code": "2345-7" if mapped else "8867-4"},
@@ -106,8 +109,11 @@ def main() -> None:
     ap.add_argument("--reps", type=int, default=3)
     ap.add_argument("--rebuild-at", default="")
     ap.add_argument("--no-project", action="store_true")
+    ap.add_argument("--step-seconds", type=int, default=60, help="time between readings; a small step packs the same rows into fewer days")
     ap.add_argument("--resume", action="store_true", help="measure an instance this script already filled (no init, no panels)")
     a = ap.parse_args()
+    global STEP_SECONDS
+    STEP_SECONDS = a.step_seconds
     home, scratch = Path(a.home), Path(a.home).parent / "bench-scratch"
     b = Bench(a.src, home, scratch)
     results: dict = {"src": a.src, "python": sys.version.split()[0], "batch_rows": a.batch_rows, "reps": a.reps, "stages": []}

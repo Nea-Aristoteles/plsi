@@ -181,7 +181,7 @@ def combos(ix: LogIndex, hi: int | None) -> list[tuple[str, str | None, str | No
     effective times straddle `hi` is counted from the index."""
     c = ix.conn
     gone = {(k, s, co, f): n for k, s, co, f, n in c.execute(
-        "SELECT kind, code_system, code, fasting, COUNT(*) FROM events WHERE gone=1 AND kind IS NOT NULL GROUP BY kind, code_system, code, fasting")}
+        "SELECT kind, code_system, code, fasting, COUNT(*) FROM events INDEXED BY ix_gone WHERE gone=1 AND kind IS NOT NULL GROUP BY kind, code_system, code, fasting")}
     out = []
     for kind, system, code, fasting, n, low, high in c.execute("SELECT kind, code_system, code, fasting, n, min_eff, max_eff FROM combos").fetchall():
         key = (kind, system or None, code or None, None if fasting == -1 else fasting)
@@ -201,5 +201,19 @@ def observation_rows(ix: LogIndex, hi: int | None) -> Iterator[tuple[int, str, s
     """(seq, id, kind, code system, code, fasting) of every active observation in log order."""
     cur = ix.conn.execute("SELECT seq, id, kind, code_system, code, fasting FROM events WHERE kind IS NOT NULL AND gone=0 AND eff<=? ORDER BY seq",
                           (hi if hi is not None else 1 << 62,))
+    while page := cur.fetchmany(PAGE):
+        yield from page
+
+
+def combo_ids(ix: LogIndex, key: tuple[str, str | None, str | None, int | None], hi: int | None) -> Iterator[tuple[int, str]]:
+    """(seq, id) of the active observations of one (kind, code system, code, fasting) combination effective by `hi`."""
+    kind, system, code, fasting = key
+    where, args = ["kind=?", "gone=0", "eff<=?", "fasting IS ?"], [kind, hi if hi is not None else 1 << 62, fasting]
+    if system is not None:
+        where += ["code_system=?", "code=?"]
+        args += [system, code]
+    else:
+        where.append("code_system IS NULL")
+    cur = ix.conn.execute(f"SELECT seq, id FROM events WHERE {' AND '.join(where)}", args)
     while page := cur.fetchmany(PAGE):
         yield from page

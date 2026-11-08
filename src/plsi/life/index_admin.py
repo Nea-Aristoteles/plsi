@@ -41,7 +41,7 @@ def status(instance: str) -> dict[str, Any]:
         out |= {
             "index_bytes": _size(ix), "version": meta["version"], "fingerprint_ok": meta["fingerprint"] == fingerprint(),
             "indexed_bytes": meta["off"], "indexed_lines": meta["lines"], "behind_bytes": max(0, log_bytes - meta["off"] - meta["pending_len"]),
-            "events": ix.conn.execute("SELECT COUNT(*) FROM events").fetchone()[0],
+            "events": meta["events"],
             "torn_lines": ix.conn.execute("SELECT COUNT(*) FROM torn").fetchone()[0] + (1 if meta["pending_len"] else 0),
             "matches_log": verified,
             "state": "stale" if not verified else "current" if ix._fresh(meta, log_bytes) else "behind",

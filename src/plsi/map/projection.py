@@ -291,11 +291,13 @@ class Projection:
         loose = {(k, s, c, f): n for k, s, c, f, n in observed.combos(index, self.hi)
                  if k not in kinds and not (s is not None and any(accepts_pair(m, s, c, f) for m in measured))}
         total = sum(loose.values())
-        ids: list[str] = []
-        if total:
-            for _, event_id, k, s, c, f in observed.observation_rows(index, self.hi):
-                if (k, s, c, f) in loose:
-                    ids.append(event_id)
-                    if len(ids) == min(cap, total):
-                        break
+        if total <= cap:  # few: read each combination's rows through its index, then put them in log order
+            found = sorted(row for key in loose for row in observed.combo_ids(index, key, self.hi))
+            return [event_id for _, event_id in found], total
+        ids: list[str] = []  # many: the first `cap` in log order turn up early in a scan
+        for _, event_id, k, s, c, f in observed.observation_rows(index, self.hi):
+            if (k, s, c, f) in loose:
+                ids.append(event_id)
+                if len(ids) == cap:
+                    break
         return ids, total

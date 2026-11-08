@@ -280,6 +280,63 @@ Canonical CSV header: `effective_at,text,value,unit[,code_system,code,specimen,k
 
 Optional keys go in a gitignored `.env` (copy `.env.example`); the process environment overrides it. `plsi keys status` reports booleans only. A secret the user already has under another name is used through `plsi keys map --name <VAR> --from <their name>` (`plsi keys scan` lists the names); only the names are stored.
 
+## Large histories: the event index
+
+Per-reading data (a glucose sensor, a heart-rate stream, a ring) is ingested the same way as a lab panel: one `ObservationInput`
+row per reading, through the native `plsi ingest`. Each row keeps its own source reference, so identical values stay distinct and
+a replay is a duplicate:
+
+```bash
+plsi ingest --instance me --file readings.json --dry-run          # validate, normalize, dedupe, conflicts: nothing written
+plsi ingest --instance me --file readings.json                     # append (a row = one reading, origin.record_id = its ordinal)
+plsi events list --instance me --limit 20                          # the newest 20 events
+plsi events list --instance me --limit 1000 --after start          # page forward; pass `next_after` as the next --after
+plsi project --instance me --map blood_phenoage                    # state: latest values, last 20 points, derived values
+plsi maps select --instance me                                     # coverage of every map
+```
+
+A row's identity is `dedupe_key` (kind, code or lower-cased text, effective time, value, comparator, normalized unit, specimen,
+fasting, `origin.file_sha256`, `origin.record_id`, clinical status, end time); `repeat: true` marks a deliberate repeat. Validation,
+unit handling, conflicts, privacy checks and the 50 MiB input cap are unchanged.
+
+**How it scales.** `events.jsonl` stays the only record and is only ever appended to. Beside it the engine keeps a disposable SQLite
+index, `instances/<name>/index/events.sqlite3`: where each line is, its id, type, recorded time, dedupe keys and retraction flag,
+and for observations the kind, code, effective time, fasting flag and origin kind. Ingest, dry run, the dedupe and monthly-conflict
+checks, `events list`, `project`, `maps select`, the care context and the freshness check ask the index and read back only the
+events they return, so time and memory follow the size of the call (rows in, rows listed, days with data), not the size of the log.
+The index holds no values and no free text (uncoded texts only as a hash), never leaves the instance and goes with it on `instances
+delete`; keep `index/` out of cloud-sync folders. Memory of one ingest call is proportional to the rows in that call (about 5 KiB per
+row; 50,000 rows is a 17 MB file and about 320 MiB). Measured numbers: `tests/bench/results/`.
+
+**Keeping it healthy** (the log is never changed by any of this):
+
+```bash
+plsi index status --instance me     # current | behind | stale | missing | unreadable, sizes, indexed events, torn lines
+plsi index verify --instance me     # audit every log line against the index, one streamed pass; ok or the first mismatches
+plsi index rebuild --instance me    # build a fresh index from the log and replace the cache
+```
+
+Nothing needs to be run by hand: a missing, behind (a crash between the log append and the index commit, or a log appended by an
+older PLSI), shorter, differently-headed, damaged or differently-versioned index is caught up or rebuilt on the next command, and a
+cold build reads the log without the instance lock (it takes the lock only to catch up and publish). A torn last line is reported
+as `TORN_LINE` and left in place; the next append ends it with a newline, as before. Where the instance folder is read-only, a
+command builds a temporary index for that run. The first command after moving an existing instance to this version builds its
+index (about 45 microseconds per event on one core and about 250 MiB of memory at any size: `plsi index rebuild` does it up front). Concurrent
+writers still queue on the instance lock (10 s wait); readers never wait while the index is current.
+`plsi doctor` reports the SQLite version (3.24 or newer is required; it ships with Python).
+
+**Install, upgrade, revert.** Base: release `v0.2.1`, commit `17c433c4a9ecb54279ab02ba1d7d63ee8e8a2e81` (tip of upstream `main` when
+this was written, no later tag). The index arrived in the commit that adds `src/plsi/life/index.py` (`git log --follow -- src/plsi/life/index.py`).
+Upgrading needs no migration. Reverting to v0.2.1 loses nothing: the log is byte-for-byte what v0.2.1 would have written, and v0.2.1
+ignores `index/` (delete it to reclaim the space). One state-file difference: a `StateDocument` lists at most 1000 unmapped observation
+ids and adds `unmapped_count` when there are more; v0.2.1 cannot read such a state file, so run `plsi project` again after reverting.
+To move an instance, copy `events.jsonl` and `subject.json`; the index is rebuilt at the destination.
+
+**What is still proportional to the history.** `plsi export` and `plsi revise` read the observations of one instance (export holds them
+in memory), `plsi clinic` checks which files are recorded by streaming the log, `events list` without `--limit` returns the whole log,
+and `coordinate_observations` without `since`/`until` returns every value (scoring and the baseline gate pass a window). A cold index
+build is single-core. Windows, macOS, network or cloud-synced drives and Python 3.11 are untested here.
+
 ## Layout
 
 ```
@@ -294,7 +351,7 @@ skills/<role>/<skill>/SKILL.md      shared/team (the roster); one folder per bot
 src/plsi/                           the toolbelt: cli + commands (the command table), vocab/ (every enum), models, events and one
                                     module per concern; life/ map/ policy/ (each with its models.py); mothership/ research/ targets/
                                     (each with its commands.py; its __init__.py docstring maps its modules)
-instances/<name>/                   subject.json, events.jsonl, maps/user/, states/, reports/, exports/, artifacts/, mothership/
+instances/<name>/                   subject.json, events.jsonl, index/ (disposable event index), maps/user/, states/, reports/, exports/, artifacts/, mothership/
                                     (gitignored; under PLSI_HOME when set)
 research/<topic>/                   one research topic: topic.md, log.jsonl, questions/ hypotheses/ findings/,
                                     with day.json and notes/ beside the topics (under PLSI_HOME)
