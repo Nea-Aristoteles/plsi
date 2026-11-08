@@ -11,7 +11,8 @@ from collections.abc import Iterable, Iterator
 from datetime import UTC, date, datetime, timedelta
 from typing import Any, NamedTuple
 
-from plsi.life.index import DAY_US, LogIndex, blob, micros
+from plsi.life.index import LogIndex
+from plsi.life.index_rows import DAY_US, blob, micros
 
 IN_CHUNK = 500  # keys per IN (...) list
 PAGE = 2048  # rows fetched at a time from a scan

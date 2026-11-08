@@ -19,7 +19,7 @@ from plsi.life.store import EventStore
 from plsi.map import registry
 from plsi.map import storyline as _storyline
 from plsi.map.projection import Projection, hybrid, set_items
-from plsi.vocab import CoordinateKind, EventType, ObservationKind, ValueStatus
+from plsi.vocab import CoordinateKind, ObservationKind, ValueStatus
 
 FREE_TEXT_KINDS = {ObservationKind.GOAL, ObservationKind.PREFERENCE, ObservationKind.LIFESTYLE}  # set items with no code system
 LOCAL_MAPS = frozenset({"personal_context"})  # goals and preferences: free text about the user's life, never sent

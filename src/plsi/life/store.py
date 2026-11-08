@@ -18,7 +18,8 @@ from plsi.files import append_jsonl_many, atomic_write_json, load_json, lock
 from plsi.events import Event, NewEvent, PAYLOAD_TYPES
 from plsi.life import observed
 from plsi.life.deid import deid_subject_fields
-from plsi.life.index import LogIndex, from_micros
+from plsi.life.index import LogIndex
+from plsi.life.index_rows import from_micros
 from plsi.life.models import Subject
 from plsi.paths import instance_dir, new_id, plsi_home, validate_id
 from plsi.vocab import Ethnicity, EventType, ObservationKind, Relation, Sex
@@ -255,8 +256,9 @@ def list_events(instance: str, type: EventType | str | None = None, kind: str | 
                 after: str | None = None) -> dict[str, Any]:
     """`events list`: newest last; optional event type, observation kind and limit (last N).
 
-    `after` pages forward instead: the first `limit` events (same filters) that follow event id `after`, oldest first,
-    with `next_after` (pass it as the next `after`) while more remain; memory depends on `limit`, not on the log."""
+    `after` pages forward instead: the first `limit` events (same filters) that follow event id `after` (`start` = from
+    the first event), oldest first, with `next_after` (pass it as the next `after`) while more remain; memory depends on
+    `limit`, not on the log."""
     store = EventStore(instance)
     ix = store.index
     where, args = ["1"], []
@@ -269,7 +271,7 @@ def list_events(instance: str, type: EventType | str | None = None, kind: str | 
     if after is not None:
         if limit is None or limit <= 0:
             raise ValidationError("--after needs a --limit above zero", code="USAGE")
-        row = ix.conn.execute("SELECT seq FROM events WHERE id=? ORDER BY seq LIMIT 1", (after,)).fetchone()
+        row = (0,) if after == "start" else ix.conn.execute("SELECT seq FROM events WHERE id=? ORDER BY seq LIMIT 1", (after,)).fetchone()
         if row is None:
             raise NotFound(f"event {after!r} not found", code="EVENT_NOT_FOUND")
         where.append("seq>?")

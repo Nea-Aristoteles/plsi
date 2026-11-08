@@ -19,7 +19,7 @@ from typing import Any
 from plsi import errors, paths
 from plsi.events import Event
 from plsi.life import observed
-from plsi.life.index import micros
+from plsi.life.index_rows import micros
 from plsi.life.store import EventStore
 from plsi.life.observed import Wanted
 from plsi.map import biolearn, derive, units

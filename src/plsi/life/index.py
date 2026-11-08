@@ -11,6 +11,8 @@ Writers update it under the instance lock, right after the log append (the commi
 (crash between append and index commit, or a log appended by an older PLSI) catches up from the last indexed byte;
 one that does not match the log (shorter, other head or tail bytes, unreadable) is rebuilt. A cold build reads the
 log without the lock up to a snapshot, then takes the lock only to catch up the tail and publish the file.
+
+Modules: index_rows (schema, row mapping, fingerprint), index_scan (log lines to rows), index_db (SQLite access).
 """
 
 from __future__ import annotations
@@ -18,149 +20,37 @@ from __future__ import annotations
 import atexit
 import contextlib
 import hashlib
-import json
 import os
 import secrets
-import shutil
-import sqlite3
 import tempfile
+import time
+import weakref
 from collections.abc import Iterator
-from datetime import UTC, datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import pydantic
-
 from plsi import errors, files
-from plsi.errors import ValidationError
-from plsi.events import PAYLOAD_TYPES, Event
-from plsi.life.dedupe import dedupe_key
-from plsi.life.models import Observation
-from plsi.vocab import EventType
+from plsi.events import Event
+from plsi.life import index_db
+from plsi.life.index_db import IndexDamaged, IndexStale, sqlite3
+from plsi.life.index_rows import INDEX_VERSION, SCHEMA, fingerprint, from_micros, load_event
+from plsi.life.index_scan import Scanner, Stale
 
-INDEX_VERSION = 1
-CHUNK = 8 << 20  # bytes of log read at a time
-MAX_LINE = 16 << 20  # one event line longer than this is refused, not buffered
-BATCH = 5000  # rows per insert while scanning
 WINDOW = 4096  # bytes of the log's head and of the indexed tail that are compared on every open
 TORN_SHOWN = 20  # TORN_LINE warnings listed before the rest are counted
-EPOCH = datetime(1970, 1, 1, tzinfo=UTC)
-DAY_US = 86_400_000_000
-
-SCHEMA = (
-    "CREATE TABLE meta(k TEXT PRIMARY KEY, v) WITHOUT ROWID",
-    """CREATE TABLE events(seq INTEGER PRIMARY KEY, id TEXT NOT NULL, off INTEGER NOT NULL, ln INTEGER NOT NULL,
-       type TEXT NOT NULL, rec INTEGER NOT NULL, gone INTEGER NOT NULL DEFAULT 0, key BLOB, skey BLOB,
-       kind TEXT, code_system TEXT, code TEXT, text_key BLOB, eff INTEGER, fasting INTEGER, origin TEXT)""",
-    "CREATE INDEX ix_id ON events(id)",
-    "CREATE INDEX ix_key ON events(key) WHERE key IS NOT NULL",
-    "CREATE INDEX ix_skey ON events(skey) WHERE skey IS NOT NULL",
-    "CREATE INDEX ix_code ON events(code_system, code, eff, seq) WHERE code_system IS NOT NULL",
-    "CREATE INDEX ix_kind ON events(kind, eff, seq) WHERE kind IS NOT NULL",
-    "CREATE TABLE retractions(target TEXT PRIMARY KEY) WITHOUT ROWID",
-    "CREATE TABLE torn(line INTEGER PRIMARY KEY)",
-)
-INSERT = "INSERT INTO events(id, off, ln, type, rec, key, skey, kind, code_system, code, text_key, eff, fasting, origin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-
-
-def micros(t: datetime) -> int:
-    d = t - EPOCH
-    return (d.days * 86400 + d.seconds) * 1_000_000 + d.microseconds
-
-
-def from_micros(n: int) -> datetime:
-    return EPOCH + timedelta(microseconds=n)
-
-
-def _blob(key: str) -> bytes | str:
-    """A sha256 hex key as 32 bytes; anything else (a hostile or foreign key) stays text."""
-    try:
-        raw = bytes.fromhex(key)
-    except ValueError:
-        return key
-    return raw if len(raw) == 32 and raw.hex() == key else key
-
-
-def blob(key: str) -> bytes | str:
-    return _blob(key)
-
-
-def load_event(raw: Any, record: int) -> Event:
-    """One parsed log line -> Event with its payload model; an invalid record is refused, never skipped."""
-    try:
-        event = Event.model_validate(raw)
-        if payload_type := PAYLOAD_TYPES.get(event.type):
-            event.payload = payload_type.model_validate(event.payload)
-    except pydantic.ValidationError as exc:
-        raise ValidationError(f"events.jsonl record {record} is not a valid event: {exc.errors()[0]['msg']}", code="CORRUPT_EVENT") from None
-    return event
-
-
-def row_of(event: Event, off: int, ln: int) -> tuple[Any, ...]:
-    """The index row of one event (without seq), computed the same way when a line is written and when it is scanned."""
-    p = event.payload
-    stored = event.dedupe_key
-    if event.type == EventType.OBSERVATION and isinstance(p, Observation):
-        key = _blob(dedupe_key(p))  # recomputed from the stored payload, as ingest always did
-        s = _blob(stored) if stored else b""
-        text_key = None if p.code else hashlib.sha256(p.original_text.lower().encode("utf-8")).digest()
-        return (event.id, off, ln, event.type.value, micros(event.recorded_at), key, None if s == key else s, p.kind.value,
-                p.code.system.value if p.code else None, p.code.code if p.code else None, text_key,
-                micros(p.effective_at), None if p.fasting is None else int(p.fasting), p.origin.kind.value)
-    return (event.id, off, ln, event.type.value, micros(event.recorded_at), _blob(stored) if stored else None, None,
-            None, None, None, None, None, None, None)
-
-
-def _fingerprint() -> str:
-    """Hash of everything a stored row depends on: version, schema, the key definition (probed on fixed observations,
-    covering unit normalization) and the row mapping. A change in any of them makes every old index stale."""
-    probes = []
-    for n, (text, code, unit) in enumerate([("Probe A", {"system": "loinc", "code": "2345-7"}, "mg/dl"), ("Probe B", None, " MMOL/L "),
-                                            ("Probe C", {"system": "free", "code": "x"}, "10^3/uL"), ("Probe D", None, None)]):
-        o = Observation.model_validate({
-            "kind": "measurement", "original_text": text, "code": code, "value_quantity": 1.5, "unit": unit, "unit_original": unit,
-            "effective_at": "2026-01-02T03:04:05.678901Z", "origin": {"kind": "csv", "file_sha256": "a" * 64, "record_id": f"r{n}"},
-            "fasting": n % 2 == 0, "clinical_status": "active", "effective_end": "2026-01-03"})
-        event = Event.model_validate({"id": "evt_" + "0" * 16, "type": "observation", "recorded_at": "2026-01-01T00:00:00Z", "subject_id": "s", "dedupe_key": dedupe_key(o), "payload": o})
-        probes.append([repr(row_of(event, 1, 2))])
-    return hashlib.sha256(json.dumps([INDEX_VERSION, SCHEMA, INSERT, probes]).encode()).hexdigest()
-
-
-_FINGERPRINT: list[str] = []
-
-
-def fingerprint() -> str:
-    if not _FINGERPRINT:
-        _FINGERPRINT.append(_fingerprint())
-    return _FINGERPRINT[0]
-
-
-def _corrupt(exc: sqlite3.DatabaseError) -> bool:
-    """A damaged or foreign file (rebuild it) rather than a busy, read-only or full one (try again or fall back)."""
-    if isinstance(exc, sqlite3.OperationalError):
-        text = str(exc)
-        return "no such" in text or "malformed" in text or "not a database" in text
-    return True
-
-
-class _Stale(Exception):
-    """The log no longer matches what the index recorded about it."""
-
-
-class IndexStale(ValidationError):
-    """A line the index points at is not the event it recorded: the log changed under it."""
-
-    code = "INDEX_STALE"
 
 
 class LogIndex:
     def __init__(self, folder: Path, log: Path) -> None:
+        index_db.require()
         self.folder, self.log = folder, log
         self.db = folder / "index" / "events.sqlite3"
         self._conn: sqlite3.Connection | None = None
         self._tmp: tempfile.TemporaryDirectory[str] | None = None
         self._depth = 0
         self._warned = False
+        self._probed = False
         self._seen: tuple[int, int, int] | None = None  # (log size, mtime_ns, indexed bytes) last verified
 
     # ------------------------------------------------------------ connection
@@ -169,6 +59,7 @@ class LogIndex:
     def conn(self) -> sqlite3.Connection:
         if self._conn is None:
             self._conn = self._open()
+            weakref.finalize(self, index_db.close_quietly, self._conn)  # SQLite connections are not freed by refcount alone
         return self._conn
 
     @property
@@ -176,7 +67,8 @@ class LogIndex:
         return self._tmp is not None
 
     def _connect(self, path: Path, build: bool = False) -> sqlite3.Connection:
-        conn = sqlite3.connect(path, isolation_level=None, timeout=30.0)
+        conn = sqlite3.connect(path, isolation_level=None, timeout=30.0, factory=index_db.Conn)
+        conn.owner = weakref.ref(self)
         conn.execute("PRAGMA synchronous=OFF" if build else "PRAGMA synchronous=NORMAL")
         conn.execute("PRAGMA cache_size=-65536" if build else "PRAGMA cache_size=-16384")
         if build:
@@ -208,6 +100,13 @@ class LogIndex:
         if self._conn is not None:
             self._conn.close()
             self._conn = None
+
+    def damaged(self, exc: Exception) -> None:
+        """The file is not a usable index: remove it (the log is untouched) and say so."""
+        self._depth = 0
+        self._discard()
+        raise IndexDamaged(f"the event index was damaged ({exc}); it was removed and is rebuilt from the log on the next command",
+                           hint="run the command again, or plsi index rebuild --instance <name>") from None
 
     # ------------------------------------------------------------ meta
 
@@ -255,6 +154,38 @@ class LogIndex:
         self._seen = (size, self._log_stat()[1], off)
         return True
 
+    def _truncated(self) -> bool:
+        """The index file is shorter than its own header says (a cut-off copy), or not an SQLite file at all."""
+        try:
+            with open(self.db, "rb") as fh:
+                head = fh.read(100)
+            size = self.db.stat().st_size
+        except OSError:
+            return False
+        if len(head) < 100:
+            return size > 0
+        if head[:16] != b"SQLite format 3\x00":
+            return True
+        page, pages = int.from_bytes(head[16:18], "big") or 65536, int.from_bytes(head[28:32], "big")
+        return bool(pages) and head[24:28] == head[92:96] and size < page * pages
+
+    def _intact(self, meta: dict[str, Any]) -> bool:
+        """Cheap structural probe, once per open: the row count the meta records is there and the ends of each B-tree read."""
+        if self._probed:
+            return True
+        c = self.conn
+        if (c.execute("SELECT MAX(seq) FROM events").fetchone()[0] or 0) != meta["events"]:
+            return False
+        for probe in ("SELECT id FROM events INDEXED BY ix_id ORDER BY id DESC LIMIT 1",
+                      "SELECT key FROM events INDEXED BY ix_key WHERE key IS NOT NULL ORDER BY key DESC LIMIT 1",
+                      "SELECT skey FROM events INDEXED BY ix_skey WHERE skey IS NOT NULL ORDER BY skey DESC LIMIT 1",
+                      "SELECT code FROM events INDEXED BY ix_code WHERE code_system IS NOT NULL ORDER BY code_system DESC, code DESC LIMIT 1",
+                      "SELECT kind FROM events INDEXED BY ix_kind WHERE kind IS NOT NULL ORDER BY kind DESC LIMIT 1",
+                      "SELECT MAX(line) FROM torn", "SELECT MAX(target) FROM retractions"):
+            c.execute(probe).fetchone()
+        self._probed = True
+        return True
+
     def _fresh(self, meta: dict[str, Any], size: int) -> bool:
         if size == meta["off"] + meta["pending_len"]:
             if not meta["pending_len"]:
@@ -270,12 +201,17 @@ class LogIndex:
         """Make the index match the log (build, catch up or rebuild); a no-op inside a snapshot and when current."""
         if self._depth:
             return
+        if self._conn is None and self._truncated():
+            self._discard()
         for attempt in (0, 1):
             try:
                 self._sync_once()
                 break
+            except IndexDamaged:
+                if attempt:
+                    raise
             except sqlite3.DatabaseError as exc:
-                if attempt or not _corrupt(exc):
+                if attempt or not index_db.corrupt(exc):
                     raise
                 self._discard()
         self._warn_torn()
@@ -283,19 +219,26 @@ class LogIndex:
     def _sync_once(self) -> None:
         size, _ = self._log_stat()
         meta = self.meta()
-        if meta is None or not self._verified(meta, size):
+        if meta is None or not self._verified(meta, size) or not self._intact(meta):
             self._rebuild()
         elif not self._fresh(meta, size):
             try:
                 self._catch_up()
-            except _Stale:
+            except Stale:
                 self._rebuild()
+
+    def rebuild(self) -> None:
+        """Replace the index with a fresh build from the log (`plsi index rebuild`)."""
+        self._rebuild(force=True)
+        self._warned = False
+        self._warn_torn()
 
     def _discard(self) -> None:
         self.close()
         for suffix in ("", "-wal", "-shm"):
             Path(f"{self.db}{suffix}").unlink(missing_ok=True)
         self._seen = None
+        self._probed = False
 
     def _lock(self) -> contextlib.AbstractContextManager[Any]:
         if self.ephemeral or files.holding(self.folder):
@@ -308,7 +251,7 @@ class LogIndex:
                 size, _ = self._log_stat()
                 meta = self.meta()
                 if meta is None or not self._verified(meta, size):
-                    raise _Stale
+                    raise Stale
                 if not self._fresh(meta, size):
                     self._scan(self.conn, meta, size)
         except (OSError, sqlite3.OperationalError) as exc:
@@ -317,8 +260,9 @@ class LogIndex:
             self._use_temp()
             self._rebuild()
 
-    def _rebuild(self) -> None:
-        """Cold build from the log: scan to a snapshot without the lock, then lock to catch up and publish."""
+    def _rebuild(self, force: bool = False) -> None:
+        """Cold build from the log: scan to a snapshot without the lock, then lock to catch up and publish
+        (force: replace the published index even when it looks current)."""
         if not self.ephemeral:
             try:
                 self.db.parent.mkdir(parents=True, exist_ok=True)
@@ -346,7 +290,7 @@ class LogIndex:
                 conn.execute("PRAGMA journal_mode=WAL")
                 conn.close()
                 if tmp != self.db:
-                    if self._published_current():
+                    if not force and self._published_current():
                         tmp.unlink(missing_ok=True)
                     else:
                         for suffix in ("-wal", "-shm"):
@@ -377,12 +321,12 @@ class LogIndex:
         """Remove half-built files an earlier crash left behind (older than an hour, so a live build is never touched)."""
         for stale in self.db.parent.glob(".build-*.sqlite3*"):
             with contextlib.suppress(OSError):
-                if stale.stat().st_mtime < _now() - 3600:
+                if stale.stat().st_mtime < time.time() - 3600:
                     stale.unlink()
 
     @staticmethod
     def _blank() -> dict[str, Any]:
-        return {"off": 0, "lines": 0, "unterminated": 0, "pending_len": 0, "pending_digest": "", "world": 0}
+        return {"off": 0, "lines": 0, "unterminated": 0, "pending_len": 0, "pending_digest": "", "world": None, "events": 0}
 
     # ------------------------------------------------------------ scanning the log
 
@@ -390,7 +334,7 @@ class LogIndex:
         """Index every complete line of the log from the last indexed byte to `until`, in one transaction per call
         (a build commits per batch), then record the new position. A final line without a newline counts when it is
         valid JSON (as the original reader did) and is otherwise left pending."""
-        scanner = _Scanner(conn, meta)
+        scanner = Scanner(conn, meta)
         conn.execute("BEGIN")
         try:
             scanner.run(self.log, until)
@@ -401,11 +345,11 @@ class LogIndex:
                 conn.execute("ROLLBACK")
             raise
 
-    def _finish(self, conn: sqlite3.Connection, s: _Scanner) -> None:
+    def _finish(self, conn: sqlite3.Connection, s: Scanner) -> None:
         s.flush()
         head, tail = self._digests(s.off)
         values = {"version": INDEX_VERSION, "fingerprint": fingerprint(), "off": s.off, "lines": s.lines, "unterminated": s.unterminated,
-                  "pending_len": s.pending_len, "pending_digest": s.pending_digest, "head": head, "tail": tail, "world": s.world,
+                  "pending_len": s.pending_len, "pending_digest": s.pending_digest, "events": s.next_seq - 1, "head": head, "tail": tail, "world": s.world,
                   "built_by": "plsi"}
         conn.executemany("INSERT OR REPLACE INTO meta(k, v) VALUES (?, ?)", values.items())
 
@@ -420,7 +364,7 @@ class LogIndex:
             clean = meta is not None and not meta["pending_len"] and events and events[0][1] == meta["off"] + meta["unterminated"]
             if not clean:
                 return self._catch_up()
-            scanner = _Scanner(conn, meta)
+            scanner = Scanner(conn, meta)
             conn.execute("BEGIN")
             try:
                 for event, off, ln in events:
@@ -429,14 +373,14 @@ class LogIndex:
                 scanner.off = events[-1][1] + events[-1][2] + 1
                 scanner.unterminated = 0
                 if scanner.off != size:
-                    raise _Stale
+                    raise Stale
                 self._finish(conn, scanner)
                 conn.execute("COMMIT")
             except BaseException:
                 with contextlib.suppress(sqlite3.Error):
                     conn.execute("ROLLBACK")
                 raise
-        except (_Stale, sqlite3.Error, OSError) as exc:
+        except (Stale, sqlite3.Error, OSError) as exc:
             errors.warn("INDEX_STALE", f"events were appended but the index could not follow ({type(exc).__name__}); it catches up on the next command")
 
     def _warn_torn(self) -> None:
@@ -491,98 +435,6 @@ class LogIndex:
         return event
 
     def world_change(self) -> datetime | None:
+        """Latest recorded_at of any observation or retraction (None when there is none)."""
         meta = self.meta()
-        return from_micros(meta["world"]) if meta and meta["world"] is not None and meta["lines"] and self.conn.execute(
-            "SELECT 1 FROM events WHERE type IN ('observation','retraction') LIMIT 1").fetchone() else None
-
-
-def _now() -> float:
-    import time
-
-    return time.time()
-
-
-class _Scanner:
-    """Reads log lines into index rows and the bookkeeping the meta table records."""
-
-    def __init__(self, conn: sqlite3.Connection, meta: dict[str, Any]) -> None:
-        self.conn = conn
-        self.off, self.lines, self.unterminated = meta["off"], meta["lines"], meta["unterminated"]
-        self.pending_len, self.pending_digest = 0, ""
-        self.world = meta["world"] or 0
-        self.rows: list[tuple[Any, ...]] = []
-        self.retracted: list[str] = []
-        self.torn: list[int] = []
-        last = conn.execute("SELECT MAX(seq) FROM events").fetchone()[0] or 0
-        self.next_seq, self.first_seq = last + 1, last + 1
-
-    def run(self, log: Path, until: int) -> None:
-        with open(log, "rb") as fh:
-            pos = self.off
-            if self.unterminated and self.off < until:
-                fh.seek(pos)
-                if fh.read(1) != b"\n":
-                    raise _Stale
-                pos += 1
-            fh.seek(pos)
-            tail, tail_pos = b"", pos
-            while True:
-                chunk = fh.read(max(0, min(CHUNK, until - tail_pos - len(tail))))
-                data, base, i = tail + chunk, tail_pos, 0
-                while (j := data.find(b"\n", i)) >= 0:
-                    self.line(data[i:j], base + i)
-                    self.off = base + j + 1
-                    i = j + 1
-                tail, tail_pos = data[i:], base + i
-                if len(tail) > MAX_LINE:
-                    raise ValidationError(f"events.jsonl line at byte {tail_pos} is longer than {MAX_LINE} bytes", code="CORRUPT_EVENT")
-                if not chunk:
-                    break
-        self.unterminated = 0
-        if tail:
-            if tail.strip() and self.line(tail, tail_pos, final=True):
-                self.off, self.unterminated = tail_pos + len(tail), 1
-            else:
-                self.pending_len, self.pending_digest = len(tail), hashlib.sha256(tail).hexdigest()
-                self.off = tail_pos
-
-    def line(self, raw: bytes, off: int, final: bool = False) -> bool:
-        """Index one line; True when it was an event (or, for a final line, valid JSON that was one)."""
-        if not raw.strip():
-            self.lines += not final
-            return False
-        try:
-            obj = files.loads_json(raw.decode("utf-8", errors="replace"))
-        except (ValueError, RecursionError):
-            if not final:
-                self.lines += 1
-                self.torn.append(self.lines)
-            return False
-        self.lines += 1
-        self.push(load_event(obj, self.next_seq), off, len(raw))
-        return True
-
-    def push(self, event: Event, off: int, ln: int) -> None:
-        self.rows.append(row_of(event, off, ln))
-        self.next_seq += 1
-        if event.type in (EventType.OBSERVATION, EventType.RETRACTION):
-            self.world = max(self.world, self.rows[-1][4])
-        if event.type == EventType.RETRACTION:
-            self.retracted.append(event.payload.target_event_id)  # type: ignore[union-attr]
-        if len(self.rows) >= BATCH:
-            self.flush()
-
-    def flush(self) -> None:
-        c = self.conn
-        if self.rows:
-            c.executemany(INSERT, self.rows)
-            c.execute("UPDATE events SET gone=1 WHERE seq>=? AND gone=0 AND id IN (SELECT target FROM retractions)", (self.first_seq,))
-            self.rows.clear()
-        if self.retracted:
-            c.executemany("INSERT OR IGNORE INTO retractions(target) VALUES (?)", [(t,) for t in self.retracted])
-            c.executemany("UPDATE events SET gone=1 WHERE id=?", [(t,) for t in self.retracted])
-            self.retracted.clear()
-        if self.torn:
-            c.executemany("INSERT OR IGNORE INTO torn(line) VALUES (?)", [(n,) for n in self.torn])
-            self.torn.clear()
-        self.first_seq = self.next_seq
+        return from_micros(meta["world"]) if meta and meta["world"] is not None else None
