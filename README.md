@@ -309,8 +309,8 @@ delete`; keep `index/` out of cloud-sync folders. Memory of one ingest call is p
 row; 50,000 rows is a 17 MB file and about 320 MiB).
 
 Measured with the native CLI on one 4-core VM (`tests/bench/results/`, reproduce with `tests/bench/scale.py`): up to 8,388,608 identical-valued
-readings with distinct ordinals (4.7 GiB log, 2.3 GiB index), a 4096-row dry run stays at 0.33-0.40 s and 68 MiB (v0.2.1: 13.5 s and 986 MiB at only
-131,072); a real 4096-row append goes from 0.57 s to 0.9 s; `events list --limit 20` stays at 0.19 s; `project` takes 0.67 s and `maps select` 2.2 s at 8.4M
+readings with distinct ordinals (4.7 GiB log, 2.3 GiB index), a 4096-row dry run stays at 0.33-0.37 s and 68 MiB (v0.2.1: 13.5 s and 986 MiB at only
+131,072); a real 4096-row append goes from 0.57 s to 0.9 s; `events list --limit 20` stays at 0.19 s; `project` takes 0.67 s and `maps select` 3.3 s at 8.4M
 one-reading-a-minute events, and `project` stays at 0.35 s when 2.1M readings fall in 48 days (time follows days with data, not readings). A cold
 rebuild takes 42-48 µs per event (405 s at 8.4M). Larger than 8.4M events is not measured.
 
