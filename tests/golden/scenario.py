@@ -21,7 +21,6 @@ from pathlib import Path
 home = Path(tempfile.mkdtemp(prefix="plsi-golden-"))
 os.environ.update(PLSI_HOME=str(home), PLSI_TEST_MODE="1", PLSI_NOW="2026-06-01T00:00:00Z")
 
-from plsi import clock, files  # noqa: E402
 from plsi.life import ingest as I, revise, store  # noqa: E402
 from plsi.map import mapper, registry  # noqa: E402
 
