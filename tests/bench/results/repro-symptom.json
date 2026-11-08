@@ -1,0 +1,146 @@
+{
+ "v0.2.1": {
+  "src": "/tmp/scratch/base/src",
+  "rows": 32768,
+  "runs": {
+   "4096": {
+    "calls": 8,
+    "total_wall_s": 13.58,
+    "first_call_s": 0.451,
+    "last_call_s": 3.039,
+    "first_call_rss_kib": 70084,
+    "last_call_rss_kib": 260248,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410,
+    "dry_run_4096_new": {
+     "wall_s": 2.445,
+     "rss_kib": 286528,
+     "counts": {
+      "accepted": 4096,
+      "duplicate": 0,
+      "rejected": 0
+     },
+     "rows": 4096,
+     "bytes": 1036288
+    },
+    "dry_run_replay_last_batch": {
+     "wall_s": 2.627,
+     "rss_kib": 286176,
+     "counts": {
+      "accepted": 0,
+      "duplicate": 4096,
+      "rejected": 0
+     },
+     "rows": 4096,
+     "bytes": 1028096
+    }
+   },
+   "1024": {
+    "calls": 32,
+    "total_wall_s": 49.42,
+    "first_call_s": 0.248,
+    "last_call_s": 3.092,
+    "first_call_rss_kib": 43640,
+    "last_call_rss_kib": 261624,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410
+   },
+   "128": {
+    "calls": 256,
+    "total_wall_s": 391.63,
+    "first_call_s": 0.208,
+    "last_call_s": 3.073,
+    "first_call_rss_kib": 35820,
+    "last_call_rss_kib": 262228,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410
+   }
+  },
+  "empty_home_dry_run_4096": {
+   "wall_s": 0.362,
+   "rss_kib": 60712,
+   "counts": {
+    "accepted": 4096,
+    "duplicate": 0,
+    "rejected": 0
+   },
+   "rows": 4096,
+   "bytes": 1036288
+  }
+ },
+ "indexed": {
+  "src": "/workspace/src",
+  "rows": 32768,
+  "runs": {
+   "4096": {
+    "calls": 8,
+    "total_wall_s": 4.49,
+    "first_call_s": 0.559,
+    "last_call_s": 0.556,
+    "first_call_rss_kib": 87480,
+    "last_call_rss_kib": 88692,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410,
+    "dry_run_4096_new": {
+     "wall_s": 0.362,
+     "rss_kib": 53496,
+     "counts": {
+      "accepted": 4096,
+      "duplicate": 0,
+      "rejected": 0
+     },
+     "rows": 4096,
+     "bytes": 1036288
+    },
+    "dry_run_replay_last_batch": {
+     "wall_s": 0.374,
+     "rss_kib": 54224,
+     "counts": {
+      "accepted": 0,
+      "duplicate": 4096,
+      "rejected": 0
+     },
+     "rows": 4096,
+     "bytes": 1028096
+    }
+   },
+   "1024": {
+    "calls": 32,
+    "total_wall_s": 9.5,
+    "first_call_s": 0.328,
+    "last_call_s": 0.309,
+    "first_call_rss_kib": 49644,
+    "last_call_rss_kib": 50916,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410
+   },
+   "128": {
+    "calls": 256,
+    "total_wall_s": 55.63,
+    "first_call_s": 0.221,
+    "last_call_s": 0.22,
+    "first_call_rss_kib": 38284,
+    "last_call_rss_kib": 39764,
+    "accepted": 32768,
+    "input_bytes": 8213658,
+    "log_bytes": 16864410
+   }
+  },
+  "empty_home_dry_run_4096": {
+   "wall_s": 0.345,
+   "rss_kib": 52016,
+   "counts": {
+    "accepted": 4096,
+    "duplicate": 0,
+    "rejected": 0
+   },
+   "rows": 4096,
+   "bytes": 1036288
+  }
+ }
+}

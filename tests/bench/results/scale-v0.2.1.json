@@ -1,0 +1,460 @@
+{
+ "src": "/tmp/scratch/base/src",
+ "python": "3.12.3",
+ "batch_rows": 32768,
+ "reps": 2,
+ "stages": [
+  {
+   "target_events": 8192,
+   "bulk_calls": [
+    {
+     "wall_s": 0.8,
+     "rss_kib": 108112,
+     "rows": 8084,
+     "bytes": 2666610,
+     "counts": {
+      "accepted": 8084,
+      "duplicate": 0,
+      "rejected": 0
+     }
+    }
+   ],
+   "events": 8192,
+   "log_bytes": 4832345,
+   "index_bytes": null,
+   "dry_run_4096_new": {
+    "n": 2,
+    "wall_s_mean": 0.875,
+    "wall_s_min": 0.841,
+    "wall_s_max": 0.91,
+    "wall_s_sd": 0.049,
+    "rss_kib_max": 118600,
+    "rss_kib_min": 118580,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1376256
+   },
+   "dry_run_4096_replay": {
+    "n": 2,
+    "wall_s_mean": 0.786,
+    "wall_s_min": 0.782,
+    "wall_s_max": 0.791,
+    "wall_s_sd": 0.006,
+    "rss_kib_max": 118184,
+    "rss_kib_min": 118148,
+    "counts": {
+     "accepted": 0,
+     "duplicate": 4096,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1351680
+   },
+   "dry_run_128_new": {
+    "n": 2,
+    "wall_s_mean": 0.61,
+    "wall_s_min": 0.608,
+    "wall_s_max": 0.612,
+    "wall_s_sd": 0.003,
+    "rss_kib_max": 93496,
+    "rss_kib_min": 93456,
+    "counts": {
+     "accepted": 128,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 128,
+    "bytes": 43008
+   },
+   "events_list_limit_20": {
+    "n": 2,
+    "wall_s_mean": 0.394,
+    "wall_s_min": 0.388,
+    "wall_s_max": 0.399,
+    "wall_s_sd": 0.008,
+    "rss_kib_max": 88520,
+    "rss_kib_min": 88176
+   },
+   "project_blood_phenoage": {
+    "n": 2,
+    "wall_s_mean": 0.551,
+    "wall_s_min": 0.548,
+    "wall_s_max": 0.554,
+    "wall_s_sd": 0.004,
+    "rss_kib_max": 93748,
+    "rss_kib_min": 93120
+   },
+   "maps_select": {
+    "n": 2,
+    "wall_s_mean": 0.618,
+    "wall_s_min": 0.597,
+    "wall_s_max": 0.639,
+    "wall_s_sd": 0.03,
+    "rss_kib_max": 92432,
+    "rss_kib_min": 92388
+   },
+   "warm_append_4096": {
+    "n": 2,
+    "wall_s_mean": 1.307,
+    "wall_s_min": 1.108,
+    "wall_s_max": 1.506,
+    "wall_s_sd": 0.281,
+    "rss_kib_max": 148764,
+    "rss_kib_min": 119404,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1353860
+   }
+  },
+  {
+   "target_events": 32768,
+   "bulk_calls": [
+    {
+     "wall_s": 3.221,
+     "rss_kib": 256944,
+     "rows": 16384,
+     "bytes": 5423104,
+     "counts": {
+      "accepted": 16384,
+      "duplicate": 0,
+      "rejected": 0
+     }
+    }
+   ],
+   "events": 32768,
+   "log_bytes": 19379421,
+   "index_bytes": null,
+   "dry_run_4096_new": {
+    "n": 2,
+    "wall_s_mean": 3.425,
+    "wall_s_min": 3.354,
+    "wall_s_max": 3.497,
+    "wall_s_sd": 0.101,
+    "rss_kib_max": 292416,
+    "rss_kib_min": 292372,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1376256
+   },
+   "dry_run_4096_replay": {
+    "n": 2,
+    "wall_s_mean": 3.045,
+    "wall_s_min": 2.911,
+    "wall_s_max": 3.178,
+    "wall_s_sd": 0.189,
+    "rss_kib_max": 292040,
+    "rss_kib_min": 291924,
+    "counts": {
+     "accepted": 0,
+     "duplicate": 4096,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1355776
+   },
+   "dry_run_128_new": {
+    "n": 2,
+    "wall_s_mean": 2.99,
+    "wall_s_min": 2.986,
+    "wall_s_max": 2.995,
+    "wall_s_sd": 0.006,
+    "rss_kib_max": 266816,
+    "rss_kib_min": 266796,
+    "counts": {
+     "accepted": 128,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 128,
+    "bytes": 43008
+   },
+   "events_list_limit_20": {
+    "n": 2,
+    "wall_s_mean": 1.474,
+    "wall_s_min": 1.454,
+    "wall_s_max": 1.495,
+    "wall_s_sd": 0.029,
+    "rss_kib_max": 256736,
+    "rss_kib_min": 256640
+   },
+   "project_blood_phenoage": {
+    "n": 2,
+    "wall_s_mean": 1.688,
+    "wall_s_min": 1.68,
+    "wall_s_max": 1.696,
+    "wall_s_sd": 0.011,
+    "rss_kib_max": 264128,
+    "rss_kib_min": 263340
+   },
+   "maps_select": {
+    "n": 2,
+    "wall_s_mean": 1.764,
+    "wall_s_min": 1.735,
+    "wall_s_max": 1.794,
+    "wall_s_sd": 0.042,
+    "rss_kib_max": 261644,
+    "rss_kib_min": 261552
+   },
+   "warm_append_4096": {
+    "n": 2,
+    "wall_s_mean": 4.415,
+    "wall_s_min": 4.143,
+    "wall_s_max": 4.687,
+    "wall_s_sd": 0.385,
+    "rss_kib_max": 322824,
+    "rss_kib_min": 294088,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1355776
+   }
+  },
+  {
+   "target_events": 65536,
+   "bulk_calls": [
+    {
+     "wall_s": 7.37,
+     "rss_kib": 483952,
+     "rows": 24576,
+     "bytes": 8134656,
+     "counts": {
+      "accepted": 24576,
+      "duplicate": 0,
+      "rejected": 0
+     }
+    }
+   ],
+   "events": 65536,
+   "log_bytes": 38778077,
+   "index_bytes": null,
+   "dry_run_4096_new": {
+    "n": 2,
+    "wall_s_mean": 5.97,
+    "wall_s_min": 5.961,
+    "wall_s_max": 5.979,
+    "wall_s_sd": 0.013,
+    "rss_kib_max": 524304,
+    "rss_kib_min": 524272,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1376256
+   },
+   "dry_run_4096_replay": {
+    "n": 2,
+    "wall_s_mean": 6.412,
+    "wall_s_min": 6.253,
+    "wall_s_max": 6.572,
+    "wall_s_sd": 0.226,
+    "rss_kib_max": 523792,
+    "rss_kib_min": 523772,
+    "counts": {
+     "accepted": 0,
+     "duplicate": 4096,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1355776
+   },
+   "dry_run_128_new": {
+    "n": 2,
+    "wall_s_mean": 6.348,
+    "wall_s_min": 6.307,
+    "wall_s_max": 6.39,
+    "wall_s_sd": 0.059,
+    "rss_kib_max": 498056,
+    "rss_kib_min": 498052,
+    "counts": {
+     "accepted": 128,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 128,
+    "bytes": 43008
+   },
+   "events_list_limit_20": {
+    "n": 2,
+    "wall_s_mean": 3.581,
+    "wall_s_min": 3.511,
+    "wall_s_max": 3.651,
+    "wall_s_sd": 0.099,
+    "rss_kib_max": 481224,
+    "rss_kib_min": 481184
+   },
+   "project_blood_phenoage": {
+    "n": 2,
+    "wall_s_mean": 3.943,
+    "wall_s_min": 3.815,
+    "wall_s_max": 4.071,
+    "wall_s_sd": 0.181,
+    "rss_kib_max": 491800,
+    "rss_kib_min": 490608
+   },
+   "maps_select": {
+    "n": 2,
+    "wall_s_mean": 3.463,
+    "wall_s_min": 3.298,
+    "wall_s_max": 3.628,
+    "wall_s_sd": 0.233,
+    "rss_kib_max": 488488,
+    "rss_kib_min": 488312
+   },
+   "warm_append_4096": {
+    "n": 2,
+    "wall_s_mean": 9.66,
+    "wall_s_min": 8.971,
+    "wall_s_max": 10.348,
+    "wall_s_sd": 0.974,
+    "rss_kib_max": 555224,
+    "rss_kib_min": 526628,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1355776
+   }
+  },
+  {
+   "target_events": 131072,
+   "bulk_calls": [
+    {
+     "wall_s": 12.866,
+     "rss_kib": 770316,
+     "rows": 32768,
+     "bytes": 10852596,
+     "counts": {
+      "accepted": 32768,
+      "duplicate": 0,
+      "rejected": 0
+     }
+    },
+    {
+     "wall_s": 16.537,
+     "rss_kib": 952752,
+     "rows": 24576,
+     "bytes": 8159232,
+     "counts": {
+      "accepted": 24576,
+      "duplicate": 0,
+      "rejected": 0
+     }
+    }
+   ],
+   "events": 131072,
+   "log_bytes": 77606353,
+   "index_bytes": null,
+   "dry_run_4096_new": {
+    "n": 2,
+    "wall_s_mean": 13.529,
+    "wall_s_min": 13.22,
+    "wall_s_max": 13.837,
+    "wall_s_sd": 0.436,
+    "rss_kib_max": 986204,
+    "rss_kib_min": 986124,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1376256
+   },
+   "dry_run_4096_replay": {
+    "n": 2,
+    "wall_s_mean": 14.473,
+    "wall_s_min": 14.322,
+    "wall_s_max": 14.624,
+    "wall_s_sd": 0.214,
+    "rss_kib_max": 985724,
+    "rss_kib_min": 985700,
+    "counts": {
+     "accepted": 0,
+     "duplicate": 4096,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1359872
+   },
+   "dry_run_128_new": {
+    "n": 2,
+    "wall_s_mean": 14.316,
+    "wall_s_min": 13.921,
+    "wall_s_max": 14.711,
+    "wall_s_sd": 0.559,
+    "rss_kib_max": 960772,
+    "rss_kib_min": 960752,
+    "counts": {
+     "accepted": 128,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 128,
+    "bytes": 43008
+   },
+   "events_list_limit_20": {
+    "n": 2,
+    "wall_s_mean": 8.014,
+    "wall_s_min": 7.764,
+    "wall_s_max": 8.264,
+    "wall_s_sd": 0.354,
+    "rss_kib_max": 930156,
+    "rss_kib_min": 930060
+   },
+   "project_blood_phenoage": {
+    "n": 2,
+    "wall_s_mean": 9.026,
+    "wall_s_min": 8.732,
+    "wall_s_max": 9.319,
+    "wall_s_sd": 0.415,
+    "rss_kib_max": 945684,
+    "rss_kib_min": 943472
+   },
+   "maps_select": {
+    "n": 2,
+    "wall_s_mean": 8.063,
+    "wall_s_min": 7.911,
+    "wall_s_max": 8.216,
+    "wall_s_sd": 0.216,
+    "rss_kib_max": 938076,
+    "rss_kib_min": 938060
+   },
+   "warm_append_4096": {
+    "n": 2,
+    "wall_s_mean": 20.349,
+    "wall_s_min": 19.218,
+    "wall_s_max": 21.481,
+    "wall_s_sd": 1.6,
+    "rss_kib_max": 1020996,
+    "rss_kib_min": 992264,
+    "counts": {
+     "accepted": 4096,
+     "duplicate": 0,
+     "rejected": 0
+    },
+    "rows": 4096,
+    "bytes": 1359872
+   }
+  }
+ ],
+ "cli_calls": 67
+}
