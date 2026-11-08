@@ -38,7 +38,7 @@ def plans(instance: str) -> dict[str, PlanView]:
     """Every active (not retracted) plan of the instance, folded over plan_status and prediction_score events."""
     out: dict[str, PlanView] = {}
     owner: dict[str, PlanView] = {}  # prediction id -> its plan
-    for e in mapper.event_store(instance).events():
+    for e in mapper.event_store(instance).events((EventType.PLAN, EventType.PLAN_STATUS, EventType.PREDICTION_SCORE)):
         if e.type == EventType.PLAN:
             out[e.payload.id] = owner_view = PlanView(e.payload)
             owner |= {p.id: owner_view for p in e.payload.predictions}

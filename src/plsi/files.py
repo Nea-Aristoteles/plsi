@@ -69,6 +69,14 @@ def atomic_write_json(path: Path, obj: Any, private: bool = False) -> None:
     atomic_write_text(path, json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n", private)
 
 
+_HELD: set[Path] = set()  # lock files this process holds, so its own reads never wait on them
+
+
+def holding(directory: Path) -> bool:
+    """True while this process holds `lock(directory)`."""
+    return (directory / ".lock") in _HELD
+
+
 @contextlib.contextmanager
 def lock(directory: Path, timeout: float = LOCK_TIMEOUT_S) -> Iterator[None]:
     """Exclusive `<directory>/.lock` via O_EXCL; retries until timeout, then InstanceLocked. NOT re-entrant:
@@ -83,11 +91,13 @@ def lock(directory: Path, timeout: float = LOCK_TIMEOUT_S) -> Iterator[None]:
             if time.monotonic() >= deadline:
                 raise InstanceLocked(f"{directory.name} is locked by another process", hint=f"remove {path} if no plsi process is running") from None
             time.sleep(0.05)
+    _HELD.add(path)
     try:
         os.write(fd, str(os.getpid()).encode("ascii"))
         os.close(fd)
         yield
     finally:
+        _HELD.discard(path)
         path.unlink(missing_ok=True)
 
 
@@ -95,20 +105,28 @@ def append_jsonl(path: Path, obj: Any) -> None:
     append_jsonl_many(path, [obj])
 
 
-def append_jsonl_many(path: Path, objs: Iterable[Any]) -> None:
-    """One bytes write plus fsync for all lines. A torn previous tail is terminated first so these lines stay intact."""
-    data = b"".join((canonical_json(obj) + "\n").encode("utf-8") for obj in objs)
-    if not data:
-        return
+def append_jsonl_many(path: Path, objs: Iterable[Any]) -> list[tuple[int, int]]:
+    """One bytes write plus fsync for all lines. A torn previous tail is terminated first so these lines stay intact.
+    Returns (byte offset, byte length without the newline) of each line written."""
+    lines = [(canonical_json(obj)).encode("utf-8") for obj in objs]
+    if not lines:
+        return []
+    data = b"\n".join(lines) + b"\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "ab+") as fh:
-        if fh.seek(0, os.SEEK_END) > 0:
+        start = fh.seek(0, os.SEEK_END)
+        if start > 0:
             fh.seek(-1, os.SEEK_END)
             if fh.read(1) != b"\n":
-                data = b"\n" + data
+                data, start = b"\n" + data, start + 1
         fh.write(data)
         fh.flush()
         os.fsync(fh.fileno())
+    placed, pos = [], start
+    for line in lines:
+        placed.append((pos, len(line)))
+        pos += len(line) + 1
+    return placed
 
 
 def read_jsonl(path: Path) -> list[Any]:

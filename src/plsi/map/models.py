@@ -25,6 +25,7 @@ from plsi.vocab import (
 )
 
 SERIES_CAP = 20  # most recent active values kept in CoordinateValue.series
+UNMAPPED_CAP = 1000  # unmapped observation ids listed in a StateDocument; the rest are only counted
 
 
 class Accepts(Model):
@@ -239,7 +240,8 @@ class StateDocument(Model):
     generated_at: UtcTime
     coordinates: dict[str, CoordinateValue]
     gaps: list[Gap] = []
-    unmapped_observations: list[EventId] = []
+    unmapped_observations: list[EventId] = Field(default=[], max_length=UNMAPPED_CAP)  # first UNMAPPED_CAP, log order
+    unmapped_count: int | None = None  # all unmapped observations, only when that is more than listed
     state_hash: str = ""  # set by sealed(); computed over the document minus generated_at and state_hash
 
     def compute_hash(self) -> str:

@@ -1,17 +1,27 @@
 """The projection of one map over an instance's active observations: which observations each coordinate accepts,
-its measured and derived values (with provenance) and the days they exist. Used only by plsi.map.mapper."""
+its measured and derived values (with provenance) and the days they exist. Used only by plsi.map.mapper.
+
+Nothing here holds the history in memory. Observations are found through the event index (plsi.life.observed) in
+(effective time, log order) order and only the few that a value, a series point or a day needs are read back from the
+log: the latest points of a coordinate come from the newest end of its scan, a derived coordinate needs the latest
+point of each day, and the unmapped count is a group-by. Results equal the earlier in-memory projection exactly."""
 
 from __future__ import annotations
 
+import heapq
 import re
+from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
+from itertools import chain
 from typing import Any
 
 from plsi import errors, paths
 from plsi.events import Event
-from plsi.life.models import Observation
+from plsi.life import observed
+from plsi.life.index import micros
 from plsi.life.store import EventStore
+from plsi.life.observed import Wanted
 from plsi.map import biolearn, derive, units
 from plsi.map.models import SERIES_CAP, CoordinateValue, Derive, MapContract, MapCoordinate, Provenance, SeriesPoint, SetItem
 from plsi.vocab import ClinicalStatus, Comparator, CoordinateKind, DeriveEngine, MatchKind, ObservationKind, TimeBasis, ValueStatus
@@ -22,14 +32,27 @@ def hybrid(c: MapCoordinate) -> bool:
     return c.derive is not None and bool(c.accepts.codes)
 
 
-def _accepts(c: MapCoordinate, o: Observation) -> bool:
-    if o.code is None or any((r.system, r.code) == (o.code.system, o.code.code) for r in c.accepts.reject_codes):
+def accepts_pair(c: MapCoordinate, system: str, code: str, fasting: int | None) -> bool:
+    """Whether the coordinate accepts an observation with this code and fasting flag (1, 0 or None)."""
+    if any((r.system.value, r.code) == (system, code) for r in c.accepts.reject_codes):
         return False
-    code = next((x for x in c.accepts.codes if (x.system, x.code) == (o.code.system, o.code.code)), None)
-    if code is None or not c.accepts.requires_fasting:
-        return code is not None
+    entry = next((x for x in c.accepts.codes if (x.system.value, x.code) == (system, code)), None)
+    if entry is None or not c.accepts.requires_fasting:
+        return entry is not None
     # Fasting-specific codes (their display says fasting) qualify unless the observation says it was not fasting.
-    return o.fasting is True or (o.fasting is None and "fasting" in (code.display or "").lower())
+    return fasting == 1 or (fasting is None and "fasting" in (entry.display or "").lower())
+
+
+def wanted(c: MapCoordinate) -> list[Wanted]:
+    """The codes a coordinate accepts as index scan terms: the same set accepts_pair lets through."""
+    out: dict[tuple[str, str], Wanted] = {}
+    for x in c.accepts.codes:
+        pair = (x.system.value, x.code)
+        if pair in out or any((r.system.value, r.code) == pair for r in c.accepts.reject_codes):
+            continue
+        null_ok = "fasting" in (x.display or "").lower()
+        out[pair] = Wanted(*pair, None if not c.accepts.requires_fasting else null_ok)
+    return list(out.values())
 
 
 @dataclass
@@ -52,17 +75,17 @@ class Point:
         )
 
 
-def set_items(events: list[Event], kind: ObservationKind, as_of: datetime) -> list[SetItem]:
+def set_items(store: EventStore, kind: ObservationKind, as_of: datetime) -> list[SetItem]:
     """Active items of one kind: the latest observation per item (code, else lower text) is active/unknown and open."""
-    latest: dict[tuple[str, str], Event] = {}
-    for e in sorted((e for e in events if e.payload.kind == kind), key=lambda e: e.payload.effective_at):
-        o = e.payload
-        latest[(o.code.system.value, o.code.code) if o.code else ("text", o.original_text.lower())] = e
+    latest: dict[tuple[str, Any], observed.ItemRow] = {}
+    for row in observed.kind_rows(store.index, ObservationKind(kind).value, micros(as_of)):
+        latest[(row.code_system, row.code) if row.code_system else ("text", row.text_key)] = row
+    events = store.load(latest.values())
     items = [
         SetItem(text=e.payload.original_text, code=e.payload.code, dose=e.payload.dose,
                 dose_quantity=e.payload.dose_quantity, dose_unit=e.payload.dose_unit,
                 clinical_status=e.payload.clinical_status, event_id=e.id)
-        for e in latest.values()
+        for e in events
         if e.payload.clinical_status not in (ClinicalStatus.STOPPED, ClinicalStatus.RESOLVED)
         and (e.payload.effective_end is None or e.payload.effective_end > as_of)
     ]
@@ -78,46 +101,78 @@ def _input_days(d: Derive, days: dict[str, set[date]]) -> list[date]:
 
 
 class Projection:
-    def __init__(self, store: EventStore, m: MapContract, as_of: datetime | None, events: list[Event] | None = None) -> None:
-        """events: the store's active observations when already read (registry.select reads the log once)."""
+    def __init__(self, store: EventStore, m: MapContract, as_of: datetime | None) -> None:
+        """Read through `store`'s index (call inside `store.snapshot()` for one consistent view)."""
         self.store, self.m, self.as_of = store, m, as_of
         self.subject = store.subject
         self.birth_year, self.sex = self.subject.birth_year, self.subject.sex.value
-        self.events = [e for e in (store.observations() if events is None else events) if as_of is None or e.payload.effective_at <= as_of]
-        self._by_code: dict[tuple[str, str], list[int]] = {}  # (system, code) -> positions in self.events
-        for n, e in enumerate(self.events):
-            if e.payload.code is not None:
-                self._by_code.setdefault((e.payload.code.system.value, e.payload.code.code), []).append(n)
-        self._matches: dict[str, list[Event]] = {}
-        self._points: dict[str, list[Point]] = {}
+        self.hi = None if as_of is None else micros(as_of)
+        self._per_day_cache: dict[str, dict[date, Point]] = {}
+        self._derived_cache: dict[str, list[Point]] = {}
         self._clock_runs: dict[tuple[str, date], dict[str, float | str]] = {}
 
-    def matches(self, c: MapCoordinate) -> list[Event]:
-        """Observations the coordinate accepts, by effective_at then log order."""
-        if c.id not in self._matches:
-            hits = sorted({n for x in c.accepts.codes for n in self._by_code.get((x.system.value, x.code), [])})
-            self._matches[c.id] = sorted((self.events[n] for n in hits if _accepts(c, self.events[n].payload)),
-                                         key=lambda e: e.payload.effective_at)
-        return self._matches[c.id]
+    def _rows(self, c: MapCoordinate, *, lo: int | None = None, hi: int | None = None, descending: bool = False) -> Iterator[observed.Row]:
+        """Index rows of the observations the coordinate accepts, by effective time then log order (until as_of)."""
+        top = self.hi if hi is None else hi if self.hi is None else min(hi, self.hi)
+        return observed.scan(self.store.index, wanted(c), hi=top, lo=lo, descending=descending)
 
-    def points(self, cid: str) -> list[Point]:
-        """All values of a measured or derived coordinate, oldest first (hybrid: both; on one day the measured last)."""
-        if cid not in self._points:
+    def _points_of(self, c: MapCoordinate, rows: Iterator[observed.Row]) -> Iterator[Point]:
+        for row in rows:
+            yield self._measured(c, self.store.load([row])[0])
+
+    def _measured_desc(self, c: MapCoordinate) -> Iterator[Point]:
+        return self._points_of(c, self._rows(c, descending=True))
+
+    def _measured_last_per_day(self, c: MapCoordinate) -> dict[date, Point]:
+        """The last accepted observation of each calendar day as a point (what a derived coordinate reads)."""
+        last: dict[date, observed.Row] = {}
+        for row in self._rows(c):
+            last[observed.day_of(row.eff)] = row
+        return {day: self._measured(c, e) for day, e in zip(last, self.store.load(last.values()), strict=True)}
+
+    def _per_day(self, cid: str) -> dict[date, Point]:
+        """Latest point of each day of a measured, derived or hybrid coordinate (hybrid: the measured one wins)."""
+        if cid not in self._per_day_cache:
             c = self.m.coordinate(cid)
             assert c is not None
-            if hybrid(c):
-                both = [self._measured(c, e) for e in self.matches(c)] + self._derived(c)
-                self._points[cid] = sorted(both, key=lambda p: (p.t.date(), p.provenance.match == MatchKind.CODE, p.t))
-            elif c.derive:
-                self._points[cid] = self._derived(c)
-            else:
-                self._points[cid] = [self._measured(c, e) for e in self.matches(c)]
-        return self._points[cid]
+            out: dict[date, Point] = {}
+            if c.derive:
+                out |= {p.t.date(): p for p in self._derived(c)}
+            if not c.derive or hybrid(c):
+                out |= self._measured_last_per_day(c)
+            self._per_day_cache[cid] = out
+        return self._per_day_cache[cid]
+
+    def points_desc(self, cid: str) -> Iterator[Point]:
+        """Values of a measured or derived coordinate, newest first (hybrid: both; on one day the measured last)."""
+        c = self.m.coordinate(cid)
+        assert c is not None
+        if hybrid(c):
+            key = lambda p: (p.t.date(), p.provenance.match == MatchKind.CODE, p.t)  # noqa: E731
+            return heapq.merge(self._measured_desc(c), reversed(self._derived(c)), key=key, reverse=True)
+        if c.derive:
+            return iter(reversed(self._derived(c)))
+        return self._measured_desc(c)
+
+    def points(self, cid: str, *, since: datetime | None = None, until: datetime | None = None) -> list[Point]:
+        """Values of a coordinate oldest first, optionally only those effective in [since, until]. Unbounded, this holds
+        every value of a measured coordinate: callers that need only a window or a few latest values say so."""
+        c = self.m.coordinate(cid)
+        assert c is not None
+        if since is None and until is None:
+            return list(reversed(list(self.points_desc(cid))))
+        lo, hi = None if since is None else micros(since), None if until is None else micros(until)
+        inside = [p for p in (self._derived(c) if c.derive else []) if (since is None or p.t >= since) and (until is None or p.t <= until)]
+        if not c.derive or hybrid(c):
+            inside += list(self._points_of(c, self._rows(c, lo=lo, hi=hi)))
+        if c.derive:
+            inside.sort(key=lambda p: (p.t.date(), p.provenance.match == MatchKind.CODE, p.t))
+        return inside
 
     def day_set(self, c: MapCoordinate) -> set[date]:
         """Calendar days with a value (derived: days on which every same-day input has one, after the first value of
         each carried input; hybrid: plus the measured days); computes nothing."""
-        measured_days = {e.payload.effective_at.date() for e in self.matches(c)} if c.accepts.codes else set()
+        measured_days = observed.days(self.store.index, wanted(c), self.hi) if c.accepts.codes else set()
         if not c.derive:
             return measured_days
         inputs = {i: self.day_set(self.m.coordinate(i)) for i in c.derive.inputs}  # type: ignore[arg-type]
@@ -140,9 +195,14 @@ class Projection:
         return p
 
     def _derived(self, c: MapCoordinate) -> list[Point]:
+        if c.id not in self._derived_cache:
+            self._derived_cache[c.id] = self._derive(c)
+        return self._derived_cache[c.id]
+
+    def _derive(self, c: MapCoordinate) -> list[Point]:
         d = c.derive
         assert d is not None
-        per_day = {i: {p.t.date(): p for p in self.points(i)} for i in d.inputs}  # latest value of each day
+        per_day = {i: self._per_day(i) for i in d.inputs}  # latest value of each day
         days = _input_days(d, {i: set(x) for i, x in per_day.items()})
         if not days:
             return []
@@ -206,21 +266,38 @@ class Projection:
 
     def value(self, c: MapCoordinate) -> CoordinateValue:
         if c.kind == CoordinateKind.SET:
-            if not any(e.payload.kind == c.collects for e in self.events):
+            if not observed.has_kind(self.store.index, ObservationKind(c.collects).value, self.hi):
                 return CoordinateValue(status=ValueStatus.MISSING)
-            items = set_items(self.events, c.collects, self.as_of)  # type: ignore[arg-type]
+            items = set_items(self.store, c.collects, self.as_of)  # type: ignore[arg-type]
             return CoordinateValue(value=items, event_ids=[i.event_id for i in items], status=ValueStatus.PRESENT)
-        pts = self.points(c.id)
-        if not pts:
+        newest = self.points_desc(c.id)
+        last = next(newest, None)
+        if last is None:
             return CoordinateValue(unit=c.unit, status=ValueStatus.MISSING)
-        last = pts[-1]
         fresh = self.as_of - last.t <= timedelta(days=c.recency_days)  # type: ignore[operator]
         v = last.coordinate_value(c, ValueStatus.PRESENT if fresh else ValueStatus.STALE)
-        v.series = [SeriesPoint(t=p.t, value=p.value, comparator=p.comparator, event_ids=p.event_ids)
-                    for p in pts if p.error is None and isinstance(p.value, float)][-SERIES_CAP:]
+        series: list[Point] = []
+        for p in chain([last], newest):
+            if p.error is None and isinstance(p.value, float):
+                series.append(p)
+                if len(series) == SERIES_CAP:
+                    break
+        v.series = [SeriesPoint(t=p.t, value=p.value, comparator=p.comparator, event_ids=p.event_ids) for p in reversed(series)]  # type: ignore[arg-type]
         return v
 
-    def unmapped(self) -> list[str]:
-        kinds = {c.collects for c in self.m.coordinates if c.kind == CoordinateKind.SET}
-        hit = {e.id for c in self.m.coordinates if c.kind == CoordinateKind.MEASURED for e in self.matches(c)}
-        return [e.id for e in self.events if e.id not in hit and e.payload.kind not in kinds]
+    def unmapped(self, cap: int) -> tuple[list[str], int]:
+        """Ids (first `cap`, log order) and the number of active observations no measured coordinate accepts and no set collects."""
+        index = self.store.index
+        measured = [c for c in self.m.coordinates if c.kind == CoordinateKind.MEASURED]
+        kinds = {ObservationKind(c.collects).value for c in self.m.coordinates if c.kind == CoordinateKind.SET}
+        loose = {(k, s, c, f): n for k, s, c, f, n in observed.combos(index, self.hi)
+                 if k not in kinds and not (s is not None and any(accepts_pair(m, s, c, f) for m in measured))}
+        total = sum(loose.values())
+        ids: list[str] = []
+        if total:
+            for _, event_id, k, s, c, f in observed.observation_rows(index, self.hi):
+                if (k, s, c, f) in loose:
+                    ids.append(event_id)
+                    if len(ids) == min(cap, total):
+                        break
+        return ids, total

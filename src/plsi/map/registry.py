@@ -240,10 +240,10 @@ def select(instance: str) -> list[dict[str, Any]]:
     then id. Coverage only (no clock is computed); Grok chooses; nothing is written."""
     from plsi.map import mapper
 
-    events = EventStore(instance).observations()  # the log is read once for every map
+    store = EventStore(instance)
     out = []
     for m in load_all(instance).values():
-        present = mapper.coverage(instance, m, events)
+        present = mapper.coverage(instance, m, store)
         missing = [c.id for c in m.coordinates if c.id not in present]
         out.append({"map_id": m.id, "title": m.title, "present": present, "missing": missing,
                     "ratio": round(len(present) / len(m.coordinates), 3), "tags": m.tags})

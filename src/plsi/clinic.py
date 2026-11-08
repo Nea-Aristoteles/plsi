@@ -18,7 +18,7 @@ from plsi import clock, role
 from plsi.errors import NotFound, ValidationError
 from plsi.files import append_jsonl, atomic_write_json, load_json, read_jsonl, sha256_file
 from plsi.paths import is_valid_id, plsi_home, safe_join
-from plsi.vocab import PatientAccess, RosterStatus
+from plsi.vocab import EventType, PatientAccess, RosterStatus
 
 FOLDER_RE = re.compile(r"^[A-Za-z0-9_-]{10,128}$")  # a Drive folder or file id
 SUFFIX_RE = re.compile(r"^\.[a-z0-9]{1,10}$")
@@ -178,7 +178,7 @@ def _waiting(label: str, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Files taken in for `label` that are still in its inbox and that no recorded observation came from."""
     from plsi.life.store import EventStore
 
-    recorded = {e.payload.origin.file_sha256 for e in EventStore(label).observations()}
+    recorded = {e.payload.origin.file_sha256 for e in EventStore(label).iter_events(EventType.OBSERVATION)}
     folder = plsi_home() / "inbox" / label
     out: dict[str, dict[str, Any]] = {}  # by file name: a return to an earlier version points at the same file
     for e in entries:
