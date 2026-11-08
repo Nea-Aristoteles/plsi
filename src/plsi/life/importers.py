@@ -60,8 +60,9 @@ class Imported:
     @classmethod
     def from_items(cls, items: list[Any]) -> Imported:
         out = cls()
-        for i, item in enumerate(items):
-            out.add(i, item)
+        for i in range(len(items)):
+            out.add(i, items[i])
+            items[i] = None  # each row is released as soon as it is validated: a big file is never held twice
         return out
 
     def add(self, index: int, data: dict[str, Any]) -> None:

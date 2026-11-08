@@ -243,3 +243,22 @@ def test_the_log_is_only_ever_appended_to(home):
     now = (home / "t" / "events.jsonl").read_bytes()
     assert now.startswith(raw) and now[len(raw):].count(b"\n") == 11
     assert json.loads(now.split(b"\n")[-2])["type"] == "observation"
+
+
+def test_appending_in_chunks_gives_the_same_result_as_one_append(home, monkeypatch):
+    """A big input is appended in chunks (one lock and fsync each); identity, duplicates, repeats and order are unchanged."""
+    rows = readings(40) + [obs(record="rep", repeat=True)] * 3 + readings(10, start=20) + [{"kind": "bogus"}] + readings(5, start=100)
+    results = {}
+    for name, chunk in (("whole", 10_000), ("chunks", 3)):
+        init(name)
+        monkeypatch.setattr(I, "APPEND_CHUNK", chunk)
+        results[name] = ingest(home, rows, instance=name, name=f"{name}.json")
+
+    def norm(name):
+        ids = {e["id"]: n for n, e in enumerate(naive_events(home, name))}
+        r = results[name]
+        return (r["counts"], [ids[i] for i in r["accepted"]], [ids[i] if i in ids else i for i in r["duplicates"]], r["rejected"],
+                [e["payload"]["origin"]["record_id"] for e in naive_events(home, name)])
+
+    assert norm("whole") == norm("chunks") and results["chunks"]["counts"] == {"accepted": 48, "duplicate": 10 + 0, "rejected": 1}
+    assert cli(home, "index", "verify", "--instance", "chunks")["data"]["ok"]

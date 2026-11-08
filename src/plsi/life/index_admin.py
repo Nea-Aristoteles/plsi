@@ -10,7 +10,7 @@ import time
 from typing import Any
 
 from plsi.life.index import LogIndex
-from plsi.life.index_rows import fingerprint, from_micros, load_event, row_of
+from plsi.life.index_rows import fingerprint, from_micros, load_event, row_of, tally
 from plsi.life.index_scan import iter_lines
 from plsi.life.store import EventStore
 from plsi.files import loads_json
@@ -75,6 +75,8 @@ def verify(instance: str) -> dict[str, Any]:
     bad: list[dict[str, Any]] = []
     count = mismatches = 0
     targets: list[tuple[str]] = []
+    types: dict[str, list[int]] = {}
+    combos: dict[tuple[str, str, str, int], list[int]] = {}
     rows = c.execute(f"SELECT {COLUMNS} FROM events ORDER BY seq")
     seq = 0
 
@@ -99,6 +101,7 @@ def verify(instance: str) -> dict[str, Any]:
         if event.type == EventType.RETRACTION:
             targets.append((event.payload.target_event_id,))  # type: ignore[union-attr]
         want = (seq, *row_of(event, off, len(raw)))
+        tally(want[1:], seq, types, combos)
         got = rows.fetchone()
         count += 1
         if got is None:
@@ -116,6 +119,10 @@ def verify(instance: str) -> dict[str, Any]:
     if {t for (t,) in c.execute("SELECT target FROM retractions")} != {t for (t,) in targets}:
         miss("retraction set differs")
     c.execute("DROP TABLE expected")
+    if {t: [n, first] for t, n, first in c.execute("SELECT type, n, first FROM typecount")} != types:
+        miss("per-type totals differ")
+    if {(k, s, co, f): [n, lo, hi] for k, s, co, f, n, lo, hi in c.execute("SELECT * FROM combos")} != combos:
+        miss("per-kind totals differ")
     if meta["off"] + meta["pending_len"] != log_bytes:
         miss("indexed end differs from the log end")
     last = c.execute("SELECT MAX(rec) FROM events WHERE type IN ('observation','retraction')").fetchone()[0]

@@ -297,9 +297,10 @@ def event_counts(instance: str) -> dict[str, Any]:
     ix = EventStore(instance).index
     c = ix.conn
     last = c.execute("SELECT rec FROM events ORDER BY seq DESC LIMIT 1").fetchone()
+    by_type = {EventType(t): n for t, n in c.execute("SELECT type, n FROM typecount ORDER BY first")}
     return {
-        "by_type": {EventType(t): n for t, n in c.execute("SELECT type, COUNT(*) FROM events GROUP BY type ORDER BY MIN(seq)")},
+        "by_type": by_type,
         "retracted": c.execute("SELECT COUNT(*) FROM retractions").fetchone()[0],
-        "active_observations": c.execute("SELECT COUNT(*) FROM events WHERE type='observation' AND gone=0").fetchone()[0],
+        "active_observations": by_type.get(EventType.OBSERVATION, 0) - c.execute("SELECT COUNT(*) FROM events WHERE gone=1 AND type='observation'").fetchone()[0],
         "last_recorded_at": from_micros(last[0]).isoformat() if last else None,
     }

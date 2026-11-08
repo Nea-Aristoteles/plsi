@@ -26,6 +26,7 @@ from plsi.vocab import EventType, OriginKind
 MONTHLY_MAP = MAPS_DIR / "sleep_activity.yaml"  # raw YAML: plsi.life never imports plsi.map
 MONTHLY_LABEL = "calendar-month mean"  # coordinates labelled so hold one mean per closed month (wearables/import step 3)
 MONTHLY_ORIGINS = (OriginKind.DEVICE, OriginKind.CSV, OriginKind.EXTENSION)  # the wearables/import paths
+APPEND_CHUNK = 8192  # events appended per lock and fsync, so memory does not grow with the rows of one call
 
 
 def _monthly_codes() -> dict[tuple[str, str], str]:
@@ -138,7 +139,11 @@ def ingest(
         _, changed = store.update_subject(**imported.subject, update=update)
         result["subject_updated"] = changed
 
-    observations = [to_observation(o) for o in imported.observations]
+    observations: list[Observation] = []
+    for n in range(len(imported.observations)):  # converted in place: the input objects are released as they go
+        observations.append(to_observation(imported.observations[n]))
+        imported.observations[n] = None  # type: ignore[call-overload]
+    imported.observations.clear()
     keys = [dedupe_key(o) for o in observations]
     indexes = imported.indexes
     warnings = list(imported.warnings) + [f"UNCODED: {i}" for i, o in zip(indexes, observations, strict=True) if o.code is None]
@@ -160,7 +165,9 @@ def ingest(
         ids: list[str] = [f"index {i}" for i, _, _ in fresh]
         accepted: list[Any] = [i for i, _, _ in fresh]
     else:  # append_many dedupes again under the lock, against concurrent ingests
-        written = store.append_many([NewEvent(EventType.OBSERVATION, obs, dedupe_key=key, dedupe=not obs.repeat) for _, obs, key in fresh]) if fresh else []
+        written = []
+        for n in range(0, len(fresh), APPEND_CHUNK):  # one lock and one fsync per chunk; a replay after a crash dedupes the chunks already written
+            written += store.append_many([NewEvent(EventType.OBSERVATION, obs, dedupe_key=key, dedupe=not obs.repeat) for _, obs, key in fresh[n:n + APPEND_CHUNK]])
         ids = [event_id for event_id, _ in written]
         accepted = [event_id for event_id, created in written if created]
         dupes.sort(key=lambda d: isinstance(d, int))  # log duplicates first, then same-file and concurrent repeats

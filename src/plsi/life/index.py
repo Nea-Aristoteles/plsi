@@ -120,6 +120,9 @@ class LogIndex:
         return dict(rows) or None
 
     def _digests(self, off: int) -> tuple[str, str]:
+        if off == 0:
+            empty = hashlib.sha256(b"").hexdigest()
+            return empty, empty
         with open(self.log, "rb") as fh:
             head = fh.read(min(WINDOW, off))
             fh.seek(max(0, off - WINDOW))

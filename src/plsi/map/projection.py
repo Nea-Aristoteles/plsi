@@ -125,9 +125,7 @@ class Projection:
 
     def _measured_last_per_day(self, c: MapCoordinate) -> dict[date, Point]:
         """The last accepted observation of each calendar day as a point (what a derived coordinate reads)."""
-        last: dict[date, observed.Row] = {}
-        for row in self._rows(c):
-            last[observed.day_of(row.eff)] = row
+        last = observed.last_per_day(self.store.index, wanted(c), self.hi)
         return {day: self._measured(c, e) for day, e in zip(last, self.store.load(last.values()), strict=True)}
 
     def _per_day(self, cid: str) -> dict[date, Point]:
@@ -172,7 +170,7 @@ class Projection:
     def day_set(self, c: MapCoordinate) -> set[date]:
         """Calendar days with a value (derived: days on which every same-day input has one, after the first value of
         each carried input; hybrid: plus the measured days); computes nothing."""
-        measured_days = observed.days(self.store.index, wanted(c), self.hi) if c.accepts.codes else set()
+        measured_days = set(observed.last_per_day(self.store.index, wanted(c), self.hi)) if c.accepts.codes else set()
         if not c.derive:
             return measured_days
         inputs = {i: self.day_set(self.m.coordinate(i)) for i in c.derive.inputs}  # type: ignore[arg-type]

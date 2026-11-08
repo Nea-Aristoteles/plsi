@@ -113,19 +113,42 @@ def scan(ix: LogIndex, wanted: list[Wanted], *, hi: int | None = None, lo: int |
     return heapq.merge(*streams, key=lambda r: (r.eff, r.seq), reverse=descending)
 
 
-def days(ix: LogIndex, wanted: list[Wanted], hi: int | None) -> set[date]:
-    """UTC calendar days with an active observation of the wanted codes."""
-    out: set[date] = set()
+def _clauses(w: Wanted, hi: int | None, lo: int | None) -> tuple[str, list[Any]]:
+    where, args = ["code_system=?", "code=?", "gone=0"], [w.system, w.code]
+    if hi is not None:
+        where.append("eff<=?")
+        args.append(hi)
+    if lo is not None:
+        where.append("eff>=?")
+        args.append(lo)
+    if w.fasting is not None:
+        where.append("(fasting=1 OR fasting IS NULL)" if w.fasting else "fasting=1")
+    return " AND ".join(where), args
+
+
+def _edge(ix: LogIndex, w: Wanted, hi: int | None, lo: int | None, descending: bool) -> Row | None:
+    where, args = _clauses(w, hi, lo)
+    order = "DESC" if descending else "ASC"
+    row = ix.conn.execute(f"SELECT seq, id, off, ln, eff FROM events WHERE {where} ORDER BY eff {order}, seq {order} LIMIT 1", args).fetchone()
+    return Row(*row) if row else None
+
+
+def last_per_day(ix: LogIndex, wanted: list[Wanted], hi: int | None) -> dict[date, Row]:
+    """The last active observation (effective time, then log order) of each UTC calendar day, among the wanted codes.
+
+    Jumps from one occupied day to the next with two index probes per day and code, so the work follows the number of
+    days that have data, not the number of readings."""
+    best: dict[int, Row] = {}
     for w in wanted:
-        where, args = ["code_system=?", "code=?", "gone=0"], [w.system, w.code]
-        if hi is not None:
-            where.append("eff<=?")
-            args.append(hi)
-        if w.fasting is not None:
-            where.append("(fasting=1 OR fasting IS NULL)" if w.fasting else "fasting=1")
-        out.update(day_of(d * DAY_US) for (d,) in ix.conn.execute(
-            f"SELECT DISTINCT (eff - ((eff % {DAY_US}) + {DAY_US}) % {DAY_US}) / {DAY_US} FROM events WHERE {' AND '.join(where)}", args))
-    return out
+        lo = None
+        while (first := _edge(ix, w, hi, lo, False)) is not None:
+            day = first.eff // DAY_US
+            last = _edge(ix, w, min(hi, (day + 1) * DAY_US - 1) if hi is not None else (day + 1) * DAY_US - 1, day * DAY_US, True)
+            assert last is not None
+            if day not in best or (last.eff, last.seq) > (best[day].eff, best[day].seq):
+                best[day] = last
+            lo = (day + 1) * DAY_US
+    return {day_of(d * DAY_US): row for d, row in sorted(best.items())}
 
 
 def has_kind(ix: LogIndex, kind: str, hi: int | None) -> bool:
@@ -152,9 +175,26 @@ def kind_rows(ix: LogIndex, kind: str, hi: int | None) -> Iterator[ItemRow]:
 
 
 def combos(ix: LogIndex, hi: int | None) -> list[tuple[str, str | None, str | None, int | None, int]]:
-    """(kind, code system, code, fasting, count) of every distinct combination among active observations."""
-    return ix.conn.execute("SELECT kind, code_system, code, fasting, COUNT(*) FROM events WHERE kind IS NOT NULL AND gone=0 AND eff<=? "
-                           "GROUP BY kind, code_system, code, fasting", (hi if hi is not None else 1 << 62,)).fetchall()
+    """(kind, code system, code, fasting, count) of every distinct combination among active observations effective by `hi`.
+
+    Read from the insert-only totals table minus the retracted rows (a handful, through ix_gone); only a combination whose
+    effective times straddle `hi` is counted from the index."""
+    c = ix.conn
+    gone = {(k, s, co, f): n for k, s, co, f, n in c.execute(
+        "SELECT kind, code_system, code, fasting, COUNT(*) FROM events WHERE gone=1 AND kind IS NOT NULL GROUP BY kind, code_system, code, fasting")}
+    out = []
+    for kind, system, code, fasting, n, low, high in c.execute("SELECT kind, code_system, code, fasting, n, min_eff, max_eff FROM combos").fetchall():
+        key = (kind, system or None, code or None, None if fasting == -1 else fasting)
+        if hi is None or high <= hi:
+            count = n - gone.get(key, 0)
+        elif low > hi:
+            count = 0
+        else:
+            where, args = ["kind=?", "gone=0", "eff<=?", "code_system IS ?", "code IS ?", "fasting IS ?"], [kind, hi, key[1], key[2], key[3]]
+            count = c.execute(f"SELECT COUNT(*) FROM events WHERE {' AND '.join(where)}", args).fetchone()[0]
+        if count:
+            out.append((*key, count))
+    return out
 
 
 def observation_rows(ix: LogIndex, hi: int | None) -> Iterator[tuple[int, str, str, str | None, str | None, int | None]]:

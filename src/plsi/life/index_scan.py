@@ -11,7 +11,7 @@ from typing import Any
 from plsi import files
 from plsi.errors import ValidationError
 from plsi.events import Event
-from plsi.life.index_rows import INSERT, load_event, row_of
+from plsi.life.index_rows import INSERT, UPSERT_COMBO, UPSERT_TYPE, load_event, row_of, tally
 from plsi.vocab import EventType
 
 CHUNK = 8 << 20  # bytes of log read at a time
@@ -26,6 +26,8 @@ class Stale(Exception):
 def iter_lines(log: Path, start: int, until: int, skip_newline: bool = False) -> Iterator[tuple[int, bytes, bool]]:
     """(byte offset, line without its newline, newline-terminated) for each line of the log from `start` to `until`;
     the last line may be unterminated. `skip_newline`: the byte at `start` ends a line that was already taken in."""
+    if until <= start:
+        return
     with open(log, "rb") as fh:
         pos = start
         fh.seek(start)
@@ -61,6 +63,8 @@ class Scanner:
         self.rows: list[tuple[Any, ...]] = []
         self.retracted: list[str] = []
         self.torn: list[int] = []
+        self.types: dict[str, list[int]] = {}  # type -> [events, first seq]
+        self.combos: dict[tuple[str, str, str, int], list[int]] = {}  # (kind, system, code, fasting) -> [n, min eff, max eff]
         last = conn.execute("SELECT MAX(seq) FROM events").fetchone()[0] or 0
         self.next_seq, self.first_seq = last + 1, last + 1
 
@@ -97,7 +101,9 @@ class Scanner:
         return True
 
     def push(self, event: Event, off: int, ln: int) -> None:
-        self.rows.append(row_of(event, off, ln))
+        row = row_of(event, off, ln)
+        self.rows.append(row)
+        tally(row, self.next_seq, self.types, self.combos)
         self.next_seq += 1
         if event.type in (EventType.OBSERVATION, EventType.RETRACTION):
             self.world = self.rows[-1][4] if self.world is None else max(self.world, self.rows[-1][4])
@@ -119,4 +125,8 @@ class Scanner:
         if self.torn:
             c.executemany("INSERT OR IGNORE INTO torn(line) VALUES (?)", [(n,) for n in self.torn])
             self.torn.clear()
+        c.executemany(UPSERT_TYPE, [(t, n, first) for t, (n, first) in self.types.items()])
+        c.executemany(UPSERT_COMBO, [(*key, *slot) for key, slot in self.combos.items()])
+        self.types.clear()
+        self.combos.clear()
         self.first_seq = self.next_seq

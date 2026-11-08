@@ -30,9 +30,18 @@ SCHEMA = (
     "CREATE INDEX ix_skey ON events(skey) WHERE skey IS NOT NULL",
     "CREATE INDEX ix_code ON events(code_system, code, eff, seq) WHERE code_system IS NOT NULL",
     "CREATE INDEX ix_kind ON events(kind, eff, seq) WHERE kind IS NOT NULL",
+    "CREATE INDEX ix_gone ON events(seq) WHERE gone=1",
     "CREATE TABLE retractions(target TEXT PRIMARY KEY) WITHOUT ROWID",
     "CREATE TABLE torn(line INTEGER PRIMARY KEY)",
+    # insert-only totals: events per type, and observations per (kind, code, fasting) with their effective-time range;
+    # retracted rows are subtracted at query time through ix_gone, so a retraction never rewrites these
+    "CREATE TABLE typecount(type TEXT PRIMARY KEY, n INTEGER NOT NULL, first INTEGER NOT NULL) WITHOUT ROWID",
+    """CREATE TABLE combos(kind TEXT NOT NULL, code_system TEXT NOT NULL, code TEXT NOT NULL, fasting INTEGER NOT NULL, n INTEGER NOT NULL,
+       min_eff INTEGER NOT NULL, max_eff INTEGER NOT NULL, PRIMARY KEY(kind, code_system, code, fasting)) WITHOUT ROWID""",
 )
+UPSERT_TYPE = "INSERT INTO typecount VALUES (?,?,?) ON CONFLICT(type) DO UPDATE SET n=n+excluded.n"
+UPSERT_COMBO = ("INSERT INTO combos VALUES (?,?,?,?,?,?,?) ON CONFLICT(kind, code_system, code, fasting) DO UPDATE SET "
+                "n=n+excluded.n, min_eff=min(min_eff, excluded.min_eff), max_eff=max(max_eff, excluded.max_eff)")
 INSERT = "INSERT INTO events(id, off, ln, type, rec, key, skey, kind, code_system, code, text_key, eff, fasting, origin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
 
@@ -82,6 +91,15 @@ def row_of(event: Event, off: int, ln: int) -> tuple[Any, ...]:
             None, None, None, None, None, None, None)
 
 
+def tally(row: tuple[Any, ...], seq: int, types: dict[str, list[int]], combos: dict[tuple[str, str, str, int], list[int]]) -> None:
+    """Add one row to the per-type and per-(kind, code, fasting) totals the index keeps."""
+    types.setdefault(row[3], [0, seq])[0] += 1
+    if row[7] is not None:
+        slot = combos.setdefault((row[7], row[8] or "", row[9] or "", -1 if row[12] is None else row[12]), [0, row[11], row[11]])
+        slot[0] += 1
+        slot[1], slot[2] = min(slot[1], row[11]), max(slot[2], row[11])
+
+
 def _fingerprint() -> str:
     """Hash of everything a stored row depends on: version, schema, the key definition (probed on fixed observations,
     covering unit normalization) and the row mapping. A change in any of them makes every old index stale."""
@@ -94,7 +112,7 @@ def _fingerprint() -> str:
             "fasting": n % 2 == 0, "clinical_status": "active", "effective_end": "2026-01-03"})
         event = Event.model_validate({"id": "evt_" + "0" * 16, "type": "observation", "recorded_at": "2026-01-01T00:00:00Z", "subject_id": "s", "dedupe_key": dedupe_key(o), "payload": o})
         probes.append([repr(row_of(event, 1, 2))])
-    return hashlib.sha256(json.dumps([INDEX_VERSION, SCHEMA, INSERT, probes]).encode()).hexdigest()
+    return hashlib.sha256(json.dumps([INDEX_VERSION, SCHEMA, INSERT, UPSERT_TYPE, UPSERT_COMBO, probes]).encode()).hexdigest()
 
 
 _FINGERPRINT: list[str] = []
