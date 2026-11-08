@@ -334,7 +334,7 @@ To move an instance, copy `events.jsonl` and `subject.json`; the index is rebuil
 
 **What is still proportional to the history.** `plsi export` and `plsi revise` read the observations of one instance (export holds them
 in memory), `plsi clinic` checks which files are recorded by streaming the log, `events list` without `--limit` returns the whole log,
-and `coordinate_observations` without `since`/`until` returns every value (scoring and the baseline gate pass a window). A cold index
+`coordinate_observations` without `since`/`until` returns every value (scoring and the baseline gate pass a window), and a projection `as_of` earlier than some readings (future-dated rows) counts those rows from the index, so its time follows how many there are. A cold index
 build is single-core. Windows, macOS, network or cloud-synced drives and Python 3.11 are untested here.
 
 ## Layout

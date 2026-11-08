@@ -9,7 +9,7 @@ run of new rows, a replay dry run of the last 4096 stored rows, a real 4096-row 
 `project --map blood_phenoage` and `maps select`, repeated `--reps` times; and, where asked, a cold index rebuild.
 
 Rows are identical-valued readings that differ only in their origin ordinal (`record_id`), alternating a mapped glucose
-code and an unmapped heart-rate code, one reading per `--step-seconds` (default a minute, so histories reach ~9.5 years per 5M rows) from 2017-01-01,
+code and an unmapped heart-rate code, one reading per `--step-seconds` (default a minute, so 5M rows span ~9.5 years) from 2000-01-01,
 plus a few full PhenoAge panels so the derived coordinate has values. Nothing here is real or personal.
 """
 
@@ -30,7 +30,7 @@ WRAP = (
     "p=subprocess.run([sys.executable,'-m','plsi.cli',*sys.argv[1:]],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True);"
     "sys.stdout.write(p.stdout);sys.stderr.write(p.stderr+'\\n'+str(resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss)+'\\n')"
 )
-T0 = datetime(2017, 1, 1, tzinfo=timezone.utc)
+T0 = datetime(2000, 1, 1, tzinfo=timezone.utc)  # 8.4M one-minute readings end in 2016: nothing is dated after today
 SHA = "b" * 64
 PHENO = [("1751-7", "g/L", 45.0), ("2160-0", "umol/L", 80.0), ("2345-7", "mmol/L", 5.0), ("1988-5", "mg/dL", 0.2), ("736-9", "%", 30.0),
          ("787-2", "fL", 90.0), ("788-0", "%", 13.0), ("6768-6", "U/L", 70.0), ("6690-2", "10*3/uL", 6.0)]
