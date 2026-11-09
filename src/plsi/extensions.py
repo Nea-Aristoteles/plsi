@@ -50,8 +50,8 @@ TEST_TIMEOUT_S = 300
 TEST_ENV = ("PATH", "SYSTEMROOT", "WINDIR", "COMSPEC", "TEMP", "TMP", "TMPDIR", "HOME", "USERPROFILE", "APPDATA",
             "LOCALAPPDATA", "LANG", "LC_ALL", "PYTHONIOENCODING")
 FORBIDDEN_IMPORTS: dict[ExtensionKind, tuple[str, ...]] = {
-    ExtensionKind.IMPORTER: ("plsi.map", "plsi.policy", "plsi.life.store", "plsi.cli"),
-    ExtensionKind.DERIVER: ("plsi.policy", "plsi.life.store", "plsi.cli"),
+    ExtensionKind.IMPORTER: ("plsi.map", "plsi.policy", "plsi.life.store", "plsi.life.index", "plsi.life.observed", "plsi.cli"),
+    ExtensionKind.DERIVER: ("plsi.policy", "plsi.life.store", "plsi.life.index", "plsi.life.observed", "plsi.cli"),
     ExtensionKind.EVIDENCE_SOURCE: ("plsi.life", "plsi.cli"),
 }
 

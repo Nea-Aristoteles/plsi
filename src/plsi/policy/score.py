@@ -42,7 +42,7 @@ def _open(instance: str, t: datetime) -> Iterator[Open]:
 
 def _eligible(instance: str, m: MapContract, p: Prediction, lo: datetime, hi: datetime, adopted_at: datetime) -> list[ObservedValue]:
     """Active values in [H-W-, H+W+], effective AND recorded after adoption (no retrodiction), date not assumed."""
-    return [o for o in mapper.coordinate_observations(instance, m, p.coordinate)
+    return [o for o in mapper.coordinate_observations(instance, m, p.coordinate, since=lo, until=hi)
             if lo <= o.effective_at <= hi and o.effective_at > adopted_at and o.recorded_at > adopted_at
             and o.effective_basis != TimeBasis.ASSUMED and o.value.status != ValueStatus.ERROR
             and isinstance(o.value.value, float)]

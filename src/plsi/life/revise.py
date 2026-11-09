@@ -15,7 +15,8 @@ from plsi.events import NewEvent
 from plsi.errors import UsageError, ValidationError
 from plsi.files import decode_input, parse_input_json, read_input_bytes, sha256_hex
 from plsi.life import importers
-from plsi.life.ingest import dedupe_key, to_observation
+from plsi.life.dedupe import dedupe_key
+from plsi.life.ingest import to_observation
 from plsi.life.models import DOCUMENT_RE, Observation, Origin, Retraction
 from plsi.life.store import EventStore
 from plsi.vocab import EventType
@@ -54,7 +55,7 @@ def revise(instance: str, document: str, file: str | None = None, csv: str | Non
 
     store = EventStore(instance)
     before: dict[tuple[Any, ...], list[Any]] = defaultdict(list)
-    for e in store.observations():
+    for e in store.iter_events(EventType.OBSERVATION):
         if e.payload.origin.document == document:
             before[_identity(e.payload)].append(e)
     unchanged, replaced, added = [], [], []

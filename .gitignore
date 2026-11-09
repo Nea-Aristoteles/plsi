@@ -40,3 +40,26 @@ tests/fixtures/mh_routing/*
 !tests/fixtures/mh_wellbeing/
 tests/fixtures/mh_wellbeing/*
 !tests/fixtures/mh_wellbeing/**
+# Event index tests, the v0.2.1 reference projection, golden scenario and benchmarks (tracked)
+!tests/test_index_*.py
+!tests/index_support.py
+!tests/reference_projection.py
+!tests/golden/
+tests/golden/*
+!tests/golden/scenario.py
+!tests/golden/expected.json
+!tests/golden/expected_random.json.gz
+!tests/golden/random_history.py
+!tests/golden/legacy/
+tests/golden/legacy/*
+!tests/golden/legacy/g/
+tests/golden/legacy/g/*
+!tests/golden/legacy/g/subject.json
+!tests/golden/legacy/g/events.jsonl
+!tests/bench/
+tests/bench/*
+!tests/bench/*.py
+!tests/bench/results/
+tests/bench/results/*
+!tests/bench/results/*.json
+!tests/bench/results/*.md

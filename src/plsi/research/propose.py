@@ -14,7 +14,7 @@ from plsi.life.store import EventStore
 from plsi.map import mapper
 from plsi.mothership.public import findings
 from plsi.research import notes, store
-from plsi.vocab import ObservationKind
+from plsi.vocab import EventType, ObservationKind
 from plsi.vocab.research import PERSONAL_SOURCES, TopicSource
 
 MOVED_BY = 0.2  # a coordinate whose series changed by this fraction is worth a question
@@ -74,7 +74,7 @@ def _personal(instance: str) -> list[dict[str, Any]]:
 def _symptoms(instance: str) -> list[dict[str, Any]]:
     """Symptoms the person reported, grouped by wording, with when they were first reported."""
     seen: dict[str, list[Any]] = {}
-    for event in EventStore(instance).observations():
+    for event in EventStore(instance).iter_events(EventType.OBSERVATION, kinds=[ObservationKind.SYMPTOM]):
         if event.payload.kind == ObservationKind.SYMPTOM:
             seen.setdefault(str(event.payload.original_text), []).append(event)
     out = []

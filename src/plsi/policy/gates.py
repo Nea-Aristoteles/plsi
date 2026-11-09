@@ -142,7 +142,7 @@ def _g7(instance: str, plan: PlanInput, ctx: GateContext) -> list[dict[str, str]
         if numeric(baseline):
             ids = set(baseline.event_ids)
             if any(set(o.event_ids) == ids and o.effective_basis == TimeBasis.ASSUMED
-                   for o in mapper.coordinate_observations(instance, m, p.coordinate)):
+                   for o in mapper.coordinate_observations(instance, m, p.coordinate, since=baseline.observed_at, until=baseline.observed_at)):
                 out.append(violation(f"{path}.coordinate", GateId.G7, "the baseline value has an assumed date",
                                      "ingest the result again with a document or user-stated date"))
     return out

@@ -104,9 +104,9 @@ class _Wire:
 
     def life_events(self, store: EventStore) -> list[dict[str, Any]]:
         out = []
-        for e in store.events(EventType.OBSERVATION):
+        for e in store.iter_events(EventType.OBSERVATION, kinds=LIFE_KINDS):
             o = e.payload
-            if o.kind in LIFE_KINDS and (code := self.code(o.code)):
+            if code := self.code(o.code):
                 measured = o.value_quantity is not None and self.unit(o.unit)
                 item = {"kind": o.kind.value, "year": o.effective_at.year,
                         "until": o.effective_end.year if o.effective_end else None, "basis": o.effective_basis.value,

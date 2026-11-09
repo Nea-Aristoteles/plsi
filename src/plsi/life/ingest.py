@@ -15,16 +15,18 @@ import yaml
 from plsi.events import NewEvent
 from plsi.life.models import Observation, ObservationInput, Retraction, RetractionInput
 from plsi.models import parse
-from plsi.life import importers
+from plsi.life import importers, observed
+from plsi.life.dedupe import dedupe_key
 from plsi.life.normalize import MAPS_DIR, normalize_unit
 from plsi.life.store import EventStore
 from plsi.errors import NotFound, UsageError, ValidationError
-from plsi.files import canonical_json, decode_input, load_json, parse_input_json, read_input_bytes, sha256_file, sha256_hex
+from plsi.files import decode_input, load_json, parse_input_json, read_input_bytes, sha256_file, sha256_hex
 from plsi.vocab import EventType, OriginKind
 
 MONTHLY_MAP = MAPS_DIR / "sleep_activity.yaml"  # raw YAML: plsi.life never imports plsi.map
 MONTHLY_LABEL = "calendar-month mean"  # coordinates labelled so hold one mean per closed month (wearables/import step 3)
 MONTHLY_ORIGINS = (OriginKind.DEVICE, OriginKind.CSV, OriginKind.EXTENSION)  # the wearables/import paths
+APPEND_CHUNK = 8192  # events appended per lock and fsync, so memory does not grow with the rows of one call
 
 
 def _monthly_codes() -> dict[tuple[str, str], str]:
@@ -45,36 +47,21 @@ def _month(obs: ObservationInput, codes: dict[tuple[str, str], str]) -> tuple[st
 def _conflicts(store: EventStore, fresh: list[tuple[int, Observation, str]]) -> list[dict[str, str | int]]:
     """New monthly means for a metric and month that already has a value (recorded or earlier in this input)."""
     codes = _monthly_codes()
+    keys = [(i, k) for i, obs, _ in fresh if (k := _month(obs, codes)) is not None]
     taken: dict[tuple[str, str], str] = {}
-    for e in store.observations():
-        if (k := _month(e.payload, codes)) is not None:
-            taken.setdefault(k, e.id)
+    if keys:
+        ix = store.index
+        for coordinate, month in sorted({k for _, k in keys}):
+            found = observed.first_in_month(ix, [c for c, v in codes.items() if v == coordinate], [o.value for o in MONTHLY_ORIGINS], month)
+            if found is not None:
+                taken[(coordinate, month)] = found
     out = []
-    for i, obs, _ in fresh:
-        if (k := _month(obs, codes)) is None:
-            continue
+    for i, k in keys:
         if k in taken:
             out.append({"index": i, "with": taken[k], "coordinate": k[0], "month": k[1]})
         else:
             taken[k] = f"index {i}"
     return out
-
-
-def dedupe_key(obs: ObservationInput) -> str:
-    """sha256 hex of canonical_json({kind, code or lower(original_text), effective_at, value fields, normalized unit,
-    specimen, fasting, origin.file_sha256, origin.record_id, clinical_status, effective_end}); ingest recomputes it
-    from stored payloads, so a change here applies to existing events too."""
-    d = obs.model_dump(mode="json")
-    return sha256_hex(canonical_json({
-        "kind": d["kind"],
-        "code": {"system": d["code"]["system"], "code": d["code"]["code"]} if obs.code else obs.original_text.lower(),
-        **{k: d[k] for k in ("effective_at", "value_quantity", "value_text", "value_bool", "value_comparator", "specimen", "fasting")},
-        "unit": normalize_unit(obs.unit),
-        "file_sha256": obs.origin.file_sha256,
-        "record_id": obs.origin.record_id,
-        "clinical_status": d.get("clinical_status"),
-        "effective_end": d.get("effective_end"),
-    }))
 
 
 def to_observation(obs: ObservationInput) -> Observation:
@@ -152,18 +139,25 @@ def ingest(
         _, changed = store.update_subject(**imported.subject, update=update)
         result["subject_updated"] = changed
 
-    observations = [to_observation(o) for o in imported.observations]
+    observations: list[Observation] = []
+    for n in range(len(imported.observations)):  # converted in place: the input objects are released as they go
+        observations.append(to_observation(imported.observations[n]))
+        imported.observations[n] = None  # type: ignore[call-overload]
+    imported.observations.clear()
     keys = [dedupe_key(o) for o in observations]
     indexes = imported.indexes
     warnings = list(imported.warnings) + [f"UNCODED: {i}" for i, o in zip(indexes, observations, strict=True) if o.code is None]
-    seen: dict[str, str | int] = {dedupe_key(e.payload): e.id for e in store.observations()}  # keys recomputed from stored payloads
+    logged = observed.observation_ids(store.index, [k for o, k in zip(observations, keys, strict=True) if not o.repeat])  # the log's active observations
+    local: dict[str, int] = {}  # first position in `fresh` of each key not in the log
     fresh: list[tuple[int, Observation, str]] = []
     dupes: list[str | int] = []  # an event id, or a position in fresh (same-file repeat)
     for i, obs, key in zip(indexes, observations, keys, strict=True):
-        if not obs.repeat and key in seen:
-            dupes.append(seen[key])
+        known = logged[key] if key in logged else local.get(key)
+        if not obs.repeat and known is not None:
+            dupes.append(known)
         else:
-            seen.setdefault(key, len(fresh))
+            if key not in logged:
+                local.setdefault(key, len(fresh))
             fresh.append((i, obs, key))
     conflicts = _conflicts(store, fresh)  # reported, never refused
     warnings += [f"CONFLICT: {c['index']}" for c in conflicts]
@@ -171,7 +165,9 @@ def ingest(
         ids: list[str] = [f"index {i}" for i, _, _ in fresh]
         accepted: list[Any] = [i for i, _, _ in fresh]
     else:  # append_many dedupes again under the lock, against concurrent ingests
-        written = store.append_many([NewEvent(EventType.OBSERVATION, obs, dedupe_key=key, dedupe=not obs.repeat) for _, obs, key in fresh]) if fresh else []
+        written = []
+        for n in range(0, len(fresh), APPEND_CHUNK):  # one lock and one fsync per chunk; a replay after a crash dedupes the chunks already written
+            written += store.append_many([NewEvent(EventType.OBSERVATION, obs, dedupe_key=key, dedupe=not obs.repeat) for _, obs, key in fresh[n:n + APPEND_CHUNK]])
         ids = [event_id for event_id, _ in written]
         accepted = [event_id for event_id, created in written if created]
         dupes.sort(key=lambda d: isinstance(d, int))  # log duplicates first, then same-file and concurrent repeats

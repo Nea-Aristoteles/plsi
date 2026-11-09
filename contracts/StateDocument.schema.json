@@ -470,12 +470,25 @@
       "title": "Subject Id",
       "type": "string"
     },
+    "unmapped_count": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unmapped Count"
+    },
     "unmapped_observations": {
       "default": [],
       "items": {
         "pattern": "^evt_[0-9a-f]{8,32}$",
         "type": "string"
       },
+      "maxItems": 1000,
       "title": "Unmapped Observations",
       "type": "array"
     }

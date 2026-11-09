@@ -27,6 +27,7 @@ plsi = ["report.html", "map/data/*.csv", "map/data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src", "tests"]
 addopts = "-m 'not live'"
 markers = [
     "live: needs real network access (deselected by default; run with -m live)",

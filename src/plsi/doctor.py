@@ -17,6 +17,14 @@ def _version(dist: str) -> str | None:
         return None
 
 
+def _sqlite() -> str | None:
+    try:
+        import sqlite3
+    except ImportError:
+        return None
+    return sqlite3.sqlite_version
+
+
 def _reachable(url: str) -> str:
     try:
         net.request("GET", url, timeout=15)
@@ -28,9 +36,11 @@ def _reachable(url: str) -> str:
 def doctor(online: bool = False) -> dict[str, Any]:
     """`plsi doctor`."""
     versions = {"plsi": __version__, "python": platform.python_version(), "pydantic": _version("pydantic"),
-                "pyyaml": _version("PyYAML"), "biolearn": _version("biolearn")}
+                "pyyaml": _version("PyYAML"), "biolearn": _version("biolearn"), "sqlite": _sqlite()}
     home = paths.plsi_home()
     fixes: list[str] = []
+    if versions["sqlite"] is None:
+        fixes.append("the event index needs Python's sqlite3 module: install a Python build that includes SQLite")
     if versions["biolearn"] is None:
         fixes.append('methylation clocks: python -m pip install -e "<repo>[clocks]"')
     if not keys.env_file().is_file():

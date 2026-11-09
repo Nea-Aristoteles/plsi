@@ -1,0 +1,6984 @@
+{
+ "_log_lines": 102,
+ "cardio": {
+  "accepted": [
+   "E18",
+   "E19",
+   "E20",
+   "E21",
+   "E22",
+   "E23",
+   "E24",
+   "E25",
+   "E26",
+   "E27",
+   "E28"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 11,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "context": {
+  "allergies": [
+   {
+    "code": {
+     "code": "99",
+     "system": "snomed"
+    },
+    "event_id": "E90",
+    "text": "test-allergen"
+   }
+  ],
+  "conditions": [
+   {
+    "clinical_status": "active",
+    "code": {
+     "code": "I10",
+     "system": "icd10cm"
+    },
+    "event_id": "E89",
+    "text": "Test Condition"
+   }
+  ],
+  "medications": [
+   {
+    "clinical_status": "active",
+    "code": {
+     "code": "1000",
+     "system": "rxnorm"
+    },
+    "dose": "1 unit",
+    "event_id": "E86",
+    "text": "test-drug-a"
+   }
+  ]
+ },
+ "counts": {
+  "active_observations": 96,
+  "by_type": {
+   "observation": 99,
+   "retraction": 3
+  },
+  "retracted": 3
+ },
+ "events_all": {
+  "count": 102,
+  "events": [
+   {
+    "dedupe_key": "0febf68ea34c200af663fddf846e8a16378166fd5777e5efcb3eb8b798765c38",
+    "id": "E0",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-albumin"
+     },
+     "original_text": "albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 45.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2a71cf8585029d583c0438f71151b8662ec733e1206713b3000c1df2ed38508",
+    "id": "E1",
+    "payload": {
+     "code": {
+      "code": "2160-0",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-creatinine"
+     },
+     "original_text": "creatinine",
+     "repeat": false,
+     "unit": "umol/L",
+     "unit_original": "umol/L",
+     "value_quantity": 80.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "a9d1e424d8721e4b854c7ef77f2a93e3c5388f447624f3d2d552c7d264532b53",
+    "id": "E2",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-glucose"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "21a67800540a001026401cdcd2de4f356efe2d723b2a656f17b17e370b1ca6a1",
+    "id": "E3",
+    "payload": {
+     "code": {
+      "code": "1988-5",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-crp"
+     },
+     "original_text": "crp",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 0.2
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "6339766bd957cc37caba1b6ee06ef22764a6885a5b3b79d2b5011ac18edde00c",
+    "id": "E4",
+    "payload": {
+     "code": {
+      "code": "736-9",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-lymphocyte_pct"
+     },
+     "original_text": "lymphocyte_pct",
+     "repeat": false,
+     "unit": "%",
+     "unit_original": "%",
+     "value_quantity": 30.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "0eafab304ce336c14efa0fb610dab34fda7edb9b4680a6b6f94026993b40f6d5",
+    "id": "E5",
+    "payload": {
+     "code": {
+      "code": "787-2",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-mcv"
+     },
+     "original_text": "mcv",
+     "repeat": false,
+     "unit": "fL",
+     "unit_original": "fL",
+     "value_quantity": 90.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d6f2712056efd7bf4b8425523c4a615c7a1663f0cbdca102b69a4dc79baa9939",
+    "id": "E6",
+    "payload": {
+     "code": {
+      "code": "788-0",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-rdw"
+     },
+     "original_text": "rdw",
+     "repeat": false,
+     "unit": "%",
+     "unit_original": "%",
+     "value_quantity": 13.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "2af5209e2d5492f02fd316230d30dc2c9413c4c33e295a2387924b3eab8bdda6",
+    "id": "E7",
+    "payload": {
+     "code": {
+      "code": "6768-6",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-alp"
+     },
+     "original_text": "alp",
+     "repeat": false,
+     "unit": "U/L",
+     "unit_original": "U/L",
+     "value_quantity": 70.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "6cdc10287620ecec1c6fe809986e68096086822ddabecc83adfbe90b489cc551",
+    "id": "E8",
+    "payload": {
+     "code": {
+      "code": "6690-2",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-10T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "a-wbc"
+     },
+     "original_text": "wbc",
+     "repeat": false,
+     "unit": "10*3/uL",
+     "unit_original": "10*3/uL",
+     "value_quantity": 6.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "e3e069a640c20aac596f2a5162b745ac99e6b26557e793e07a01404943d5f131",
+    "id": "E9",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-albumin"
+     },
+     "original_text": "albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 49.50000000000001
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "f87a5193d15142c32f5a6b0eb3957d8c841c45d9c70ffb9e230585b583a86982",
+    "id": "E10",
+    "payload": {
+     "code": {
+      "code": "2160-0",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-creatinine"
+     },
+     "original_text": "creatinine",
+     "repeat": false,
+     "unit": "umol/L",
+     "unit_original": "umol/L",
+     "value_quantity": 88.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "de3b8e14a5c7e5b4a46a84b72a7ee0eba144fb3f1b1f02943e0f20e4f66b20f7",
+    "id": "E11",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-glucose"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.5
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "a1efdf6cafed1992cf703a9499c07489412dc65a992ad08f38fe85ccceecd499",
+    "id": "E12",
+    "payload": {
+     "code": {
+      "code": "1988-5",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-crp"
+     },
+     "original_text": "crp",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 0.22000000000000003
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "7bf43193855568b4b70e74d8bd7d548c04ef03433ebbda559437ce005063eb10",
+    "id": "E13",
+    "payload": {
+     "code": {
+      "code": "736-9",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-lymphocyte_pct"
+     },
+     "original_text": "lymphocyte_pct",
+     "repeat": false,
+     "unit": "%",
+     "unit_original": "%",
+     "value_quantity": 33.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "3c79317db689386507a366d0b0c2881f8efaad77d2007505b8dae3845ed95d8e",
+    "id": "E14",
+    "payload": {
+     "code": {
+      "code": "787-2",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-mcv"
+     },
+     "original_text": "mcv",
+     "repeat": false,
+     "unit": "fL",
+     "unit_original": "fL",
+     "value_quantity": 99.00000000000001
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "f163c51f913b3382c48b173863d616306a35eb5e950ff8cab71ff489117ed57b",
+    "id": "E15",
+    "payload": {
+     "code": {
+      "code": "788-0",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-rdw"
+     },
+     "original_text": "rdw",
+     "repeat": false,
+     "unit": "%",
+     "unit_original": "%",
+     "value_quantity": 14.3
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "53ad18ecee0fc7c61065e71862aea4e8729399172741baab037359e507d15439",
+    "id": "E16",
+    "payload": {
+     "code": {
+      "code": "6768-6",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-alp"
+     },
+     "original_text": "alp",
+     "repeat": false,
+     "unit": "U/L",
+     "unit_original": "U/L",
+     "value_quantity": 77.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "f31906e04996bf39843d523d163d6a2e797b614d391c0b01c1b7606a5f43cc24",
+    "id": "E17",
+    "payload": {
+     "code": {
+      "code": "6690-2",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-20T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b-wbc"
+     },
+     "original_text": "wbc",
+     "repeat": false,
+     "unit": "10*3/uL",
+     "unit_original": "10*3/uL",
+     "value_quantity": 6.6000000000000005
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "fa5dca0a2eacfa1f3593a22bfe02b74e05eb7020720e44b2c02d10d330bdd8a5",
+    "id": "E18",
+    "payload": {
+     "code": {
+      "code": "8302-2",
+      "system": "loinc"
+     },
+     "effective_at": "2025-06-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "h1"
+     },
+     "original_text": "Height",
+     "repeat": false,
+     "unit": "m",
+     "unit_original": "m",
+     "value_quantity": 1.75
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "c158d88f78d390502116d9f822a44b233f0858a4868d2d72ff6b13d3a0bb9f69",
+    "id": "E19",
+    "payload": {
+     "code": {
+      "code": "8302-2",
+      "system": "loinc"
+     },
+     "effective_at": "2026-02-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "h2"
+     },
+     "original_text": "Height",
+     "repeat": false,
+     "unit": "cm",
+     "unit_original": "cm",
+     "value_quantity": 176.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "c74e4057aaeab1ba55a15b6eecf3c0b074fed3aac91eb81d93d359b9821f4ddb",
+    "id": "E20",
+    "payload": {
+     "code": {
+      "code": "29463-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-01-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "w1"
+     },
+     "original_text": "Weight",
+     "repeat": false,
+     "unit": "kg",
+     "unit_original": "kg",
+     "value_quantity": 70.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "93a2fbb3acc08c8132cce835fd47ee49961fb3e2ca5d68c45ca724da3acb4212",
+    "id": "E21",
+    "payload": {
+     "code": {
+      "code": "29463-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "w2"
+     },
+     "original_text": "Weight",
+     "repeat": false,
+     "unit": "kg",
+     "unit_original": "kg",
+     "value_quantity": 72.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "55e2d013c52990c622594b079e443baa5654e9daf47e25a775fbd0f949b3414c",
+    "id": "E22",
+    "payload": {
+     "code": {
+      "code": "39156-5",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "b1"
+     },
+     "original_text": "BMI",
+     "repeat": false,
+     "unit": "kg/m2",
+     "unit_original": "kg/m2",
+     "value_quantity": 23.5
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "25a71e4d1affd24cb8061c3a667c3a91ce6dedb332b13e90060b12c89856261c",
+    "id": "E23",
+    "payload": {
+     "code": {
+      "code": "29463-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "w3"
+     },
+     "original_text": "Weight",
+     "repeat": false,
+     "unit": "[lb_av]",
+     "unit_original": "[lb_av]",
+     "value_quantity": 154.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "1ab4ff582cfb2c3d445daad5110ca2307dcd8c33e789b8a194744a9a2190c70b",
+    "id": "E24",
+    "payload": {
+     "code": {
+      "code": "1558-6",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "fg1"
+     },
+     "original_text": "Fasting glucose",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 95.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "1252c697354921541e81e817f2b4cf22d96f4cc136a127e77a392aec12f311b5",
+    "id": "E25",
+    "payload": {
+     "code": {
+      "code": "1558-6",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-05T12:00:00Z",
+     "effective_basis": "document",
+     "fasting": true,
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "fg2"
+     },
+     "original_text": "Fasting glucose",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 99.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "75497a8523d551b5c86e8ceae572e8c4503ab8a76b463fc708190b1cf4174594",
+    "id": "E26",
+    "payload": {
+     "code": {
+      "code": "1558-6",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-06T12:00:00Z",
+     "effective_basis": "document",
+     "fasting": false,
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "fg3"
+     },
+     "original_text": "Fasting glucose",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 140.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "dabe85d84d032202d3204c0dcb081aadae35d12ae86fdff21e8e50c9319c656f",
+    "id": "E27",
+    "payload": {
+     "code": {
+      "code": "27873-9",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "fi1"
+     },
+     "original_text": "Fasting insulin",
+     "repeat": false,
+     "unit": "u[IU]/mL",
+     "unit_original": "u[IU]/mL",
+     "value_quantity": 6.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "c3e92a8fd02beb6a121846f7fee8e1251fda4d88e2a0e6e135226c35c5a985d5",
+    "id": "E28",
+    "payload": {
+     "code": {
+      "code": "27873-9",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "fi2"
+     },
+     "original_text": "Fasting insulin",
+     "repeat": false,
+     "unit": "u[IU]/mL",
+     "unit_original": "u[IU]/mL",
+     "value_quantity": 8.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ee3a6c0d1134bd51e9c04aeb4cfd9bd89581286b4264e8265d45ce0001156cb0",
+    "id": "E29",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-0"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "cea732e1b03a5174ca9b1386828204df0791fb427b214f689e7719e5ff157231",
+    "id": "E30",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-1"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "3fe982fa61e6bce45232cc3e8a1ec2829381b2a9bc1c21e37b4a704721f1d20a",
+    "id": "E31",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-2"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d3debe4b199113884e213e03099720e81f20eb7e5844afd838370e4d237a0259",
+    "id": "E32",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-3"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": true,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "a0ff453d1560ba353a852d342155706961a7e1f8a8a4e78d57b19861c7d106cd",
+    "id": "E33",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-4"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "21366994e22faece945b81411ae40bf19a4b01e3eaba4d870c1322571aeac131",
+    "id": "E34",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-5"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "4d3a2558b643dc28d35ad92791b00b1b223e8b22beac4e89cc9ef887b4d50f8d",
+    "id": "E35",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-6"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "8a4d51595305d88c77dc251f81649680698364ebb33d9d5ccbe6913291cfc7fe",
+    "id": "E36",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-7"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "487658446c1dc2cc6bf6c4c51141c59c4c5705e9ca9ea6ba05fbda891878bb39",
+    "id": "E37",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-8"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d99793d8031282d82f90e300f45c0d287ef88149e4814b2bf79013d645b5c4d2",
+    "id": "E38",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-9"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2527679db7d4f929b99795a53406ed745be2f271b7081ae3794455c3eb0e9a9",
+    "id": "E39",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-10"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ac8f77b7fb02bd028dfca3b1cfac6955ef82d3735f4dcf5cd2cebbd889311748",
+    "id": "E40",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-11"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "3f7d8179fcb74dea27b565ac646bfbc616c0a7a203666c93b91ee4ec49735d4d",
+    "id": "E41",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-12"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "751cedec3119d00dfea2855b73908b3dc18d883606c5da410d3bebc8f667d4f7",
+    "id": "E42",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-13"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "1e8b0751f6fc3e58d0dfeb27dee5b1ef2a8fa6f990355a595a1e853c33d3befc",
+    "id": "E43",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-14"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "e62e6cf3a558c546577ebf8c1a7e5c40d9aca63e58f6cee7878e2ea5b254e16c",
+    "id": "E44",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-15"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "9eecc8eeb7e431adec8779eb939b4e855d7c8cec3e602bc2280b0f87a9ba1744",
+    "id": "E45",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-16"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "a8900fa18caff1ea5b36bbea79e2bd2e61d94b0648660f662f49ec81a897f45f",
+    "id": "E46",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-17"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "7b59dbabf74c272a9a021e5d0ebbe2c2958ac2c1cd33bf35fee31d42c6359034",
+    "id": "E47",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-18"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "6103e306e48b43de28c389e6025f5432ee51025fcdf51749654e33fa3b6d8deb",
+    "id": "E48",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-19"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "5032ba6df40490dec8dedcb40e182400a98966e741279090ee2ebfa0f02d8f83",
+    "id": "E49",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-20"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "a13e9f14468e5e4d4145a6e3ee61b63d0bc43485029c5ffc30e2100e8764cec0",
+    "id": "E50",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-21"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "1fd2779d19c60ead675415312b996d0e5776a6e1c589802b832bc483cf6699c1",
+    "id": "E51",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-22"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "96fbafd78f93f7d682e55657c41a524924281b4d817f96d0dca7f6fba8ab8ab9",
+    "id": "E52",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-23"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "48c5272270eb492fc8811f2ae93474f94d331193cb1890d927907f01dccf49db",
+    "id": "E53",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-24"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "93e47236e42543324ad66feff36671bc32afbada8110cb409755a0fb9655f3fa",
+    "id": "E54",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-25"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "edec87243b06f580cf4a3aea3516f52a9c0286a3052c80d64802280579c78d1d",
+    "id": "E55",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-26"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "75f5a1251ce89a79926527bf432b4243a41d831fa5e93814972fac9e29ea0888",
+    "id": "E56",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-27"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ea2161d8dc7466fdfb500a07449f93e077d8a4616f1a0913710777bc56382699",
+    "id": "E57",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-28"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d1bbcdf492ed1f0b5b5138e8fd25c1d65743108b89a26a8b82e5149b9e81bf93",
+    "id": "E58",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-29"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "cdfa2930e5053e8e3be89e6b335efafc04e01901f9e7fa6ba9a5bbedc9aaaf44",
+    "id": "E59",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-30"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "7182a972991f0914925057d99d335c906c66f524cda46e27ec5473ce675d4ec0",
+    "id": "E60",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-31"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "5e422411ce271ac8426318cdbc84514bc02214c50f0ff7702d6a291885d89e87",
+    "id": "E61",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-32"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "c8339caa75506f6b021c0bd598bf5067baaf4b1a246a38dd58d867e525993ef7",
+    "id": "E62",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-33"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "424b1c6913f70b882ffeca7dbf7e2fe1db2666b0753df8042a413395d0fcfab3",
+    "id": "E63",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-34"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "65a1bb09aeb10c583ed787a5a605c332ef695c04cc68bc2156b0d1e6c0d3c8b7",
+    "id": "E64",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-35"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "240fc085de92e23f529410923f2e7d964aa447d1872c9ab7cbe382af1c80d19c",
+    "id": "E65",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-36"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "10e4f6e36e101d3c827e7f14e677c976d92eab207f9acbea71a3424031cbf301",
+    "id": "E66",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-37"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "e9d38187ecc1b36b08a4bb46b358192aad4830696e80bc6131a9499d8d91581b",
+    "id": "E67",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-38"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "85febcf0121c4aaf42c7533f491f822da50920cba6999a3be5a8a104572dde27",
+    "id": "E68",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "user_upload",
+      "record_id": "ord-39"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2fb4e6c0ffa1b7301761cb0175f8aaa1d2492aab62361329aec1c46851af0ba",
+    "id": "E69",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "again"
+     },
+     "original_text": "glucose",
+     "repeat": true,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2fb4e6c0ffa1b7301761cb0175f8aaa1d2492aab62361329aec1c46851af0ba",
+    "id": "E70",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "again"
+     },
+     "original_text": "glucose",
+     "repeat": true,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "80d2632c8e8875938e23044510399c6db08a5945469143067f1e89f7b23a293b",
+    "id": "E71",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-16T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "mg"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 90.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "cd3f7e35c2a4674ec39af5ba68463b225cbb906860f468647888b4cf15a6cb08",
+    "id": "E72",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-17T08:00:00Z",
+     "effective_basis": "document",
+     "fasting": true,
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "f"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.5
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ad1ac2be943d06249974bea61386dbf11d3b8355bcbb5fb0982798d573729a07",
+    "id": "E73",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-17T08:00:00Z",
+     "effective_basis": "document",
+     "fasting": false,
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "nf"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 7.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "471b62b68268ed60fd09e8dbf0a4ac2dd9bb389e2151bba9256424c615e4d775",
+    "id": "E74",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-18T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "cmp"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_comparator": "<",
+     "value_quantity": 4.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "7b89d6a4c6283d4be1f76ab1a3e7c035cd1488f3fb7406345e52cfe83a910a58",
+    "id": "E75",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-19T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "bad-unit"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "furlongs",
+     "unit_original": "furlongs",
+     "value_quantity": 6.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "db1e6180e668cade8a0724bb6fd2eadf6a4f3917ebe0428db502ee3acd28af90",
+    "id": "E76",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-19T09:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "txt"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "bcce41ab82db493886c2de1352ed60871c5a7463c8e069ef6fe0f797a6e0bfbd",
+    "id": "E77",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-20T12:00:00Z",
+     "effective_basis": "assumed",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "assumed"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.9
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2fb4e6c0ffa1b7301761cb0175f8aaa1d2492aab62361329aec1c46851af0ba",
+    "id": "E78",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "again"
+     },
+     "original_text": "glucose",
+     "repeat": true,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d2fb4e6c0ffa1b7301761cb0175f8aaa1d2492aab62361329aec1c46851af0ba",
+    "id": "E79",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "again"
+     },
+     "original_text": "glucose",
+     "repeat": true,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 5.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "2435cb83e30b8e336e3bea55a3d0b0055779e64cb48d2860e84ba447ffeaaa6d",
+    "id": "E80",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-02-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "m-02"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 420.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "325a012d2b6fd4b5853969ba92e27ff02ac6b7bc5c2f533c2e1349dd9fc471d6",
+    "id": "E81",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "m-03"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 410.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "b3cdac49b58b77a3d52b62b37c47ac0110c6d9eaf85066d4351a6f697790e427",
+    "id": "E82",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "m-03b"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 430.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "acbb2a1776de5c6fda998e3a4ff3b5c55e9089b66cd45921f1eea94b5baca01b",
+    "id": "E83",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-03-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "csv",
+      "record_id": "m-03c"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 431.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "0db975ba20dbf81548c8a6bbc5f25175019991c53bf07bc422e770a796992787",
+    "id": "E84",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "device",
+      "record_id": "m-04"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 400.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "c8e4e2e9c1b3d7870e2f2574db159367d18dc4c9bcc0f75f9530d3e278bacc54",
+    "id": "E85",
+    "payload": {
+     "code": {
+      "code": "93832-4",
+      "system": "loinc"
+     },
+     "effective_at": "2026-04-28T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "m-04b"
+     },
+     "original_text": "Sleep duration",
+     "repeat": false,
+     "unit": "min",
+     "unit_original": "min",
+     "value_quantity": 401.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "96afef5a32693059a56c9c1a1a440a8e32bcc46921b3c2270abceb14402e6859",
+    "id": "E86",
+    "payload": {
+     "clinical_status": "active",
+     "code": {
+      "code": "1000",
+      "system": "rxnorm"
+     },
+     "dose": "1 unit",
+     "effective_at": "2026-02-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-a",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ffdfbdb71b8aa600c352db6ea788d574d6f4631116cefb965d11915eb7764cd6",
+    "id": "E87",
+    "payload": {
+     "clinical_status": "active",
+     "effective_at": "2026-02-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-b",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "11961b1a61eb4c399ed28f2d8feede6d4a9ccd31a56db2797e4390b283e67921",
+    "id": "E88",
+    "payload": {
+     "clinical_status": "stopped",
+     "effective_at": "2026-03-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-b",
+     "repeat": false,
+     "value_text": "stopped"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "7c8a8449751214fde6d3030e948ed18bec64cf8b358d787e02231917de79d6d1",
+    "id": "E89",
+    "payload": {
+     "clinical_status": "active",
+     "code": {
+      "code": "I10",
+      "system": "icd10cm"
+     },
+     "effective_at": "2026-02-03T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "condition",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "Test Condition",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "9b7e6ea4eaa8ffa6ea162bd056b6d151b49e4a7dcce437553cab531fcf49dfd4",
+    "id": "E90",
+    "payload": {
+     "code": {
+      "code": "99",
+      "system": "snomed"
+     },
+     "effective_at": "2026-02-04T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "allergy",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-allergen",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "5e59ecaa1600eada99ae9c88cec4c35b518e74978b15269da83a0b3a86d15fd7",
+    "id": "E91",
+    "payload": {
+     "effective_at": "2026-02-05T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "lifestyle",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "walks daily",
+     "repeat": false,
+     "value_text": "yes"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "833768afb6a859447937dcfbd94b2c32804fadd1434217177040942cd114dc20",
+    "id": "E92",
+    "payload": {
+     "code": {
+      "code": "5792-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-02-06T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "unmapped metric",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 1.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": true,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "0f453fbf44139b318b6ff1d14c0b627a81816763e7a7d8de8aa5f590b5567945",
+    "id": "E93",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "9f450c8e39b035777ea2be48001e900660209b657a7bafc3de6c89fcbc8c7551",
+      "kind": "csv",
+      "record_id": "0"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 40.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "67d50b215c9f2e0b723af35f3a2339e1e27a2a504b7eab32e80de1ff17f790b7",
+    "id": "E94",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "file_sha256": "9f450c8e39b035777ea2be48001e900660209b657a7bafc3de6c89fcbc8c7551",
+      "kind": "csv",
+      "record_id": "1"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 40.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "id": "E95",
+    "payload": {
+     "reason": "synthetic test",
+     "target_event_id": "E92"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   },
+   {
+    "dedupe_key": "5797ecb561767a81b4d1fbb7723acc4fa6827b5c56a45c207a7abd79a6d33ecd",
+    "id": "E96",
+    "payload": {
+     "code": {
+      "code": "2345-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-15T08:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload",
+      "record_id": "ord-3"
+     },
+     "original_text": "glucose",
+     "repeat": false,
+     "unit": "mmol/L",
+     "unit_original": "mmol/L",
+     "value_quantity": 8.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "id": "E97",
+    "payload": {
+     "reason": "synthetic test",
+     "replacement_event_id": "E96",
+     "target_event_id": "E32"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   },
+   {
+    "dedupe_key": "833768afb6a859447937dcfbd94b2c32804fadd1434217177040942cd114dc20",
+    "id": "E98",
+    "payload": {
+     "code": {
+      "code": "5792-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-02-06T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "unmapped metric",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 1.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d15b2ca2efadd9b48c2c01ebe889b2a16f4623b1a6e447cc75e1f5e0ff4d9583",
+    "id": "E99",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "document": "doc-1",
+      "kind": "user_upload",
+      "record_id": "d1"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 41.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": true,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "30204a0b0914d369f3cd76e28e30af1a77799273b8313061f4586d5a2818f962",
+    "id": "E100",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "document": "doc-1",
+      "kind": "user_upload",
+      "record_id": "d1"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 42.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "id": "E101",
+    "payload": {
+     "reason": "new version of document doc-1",
+     "replacement_event_id": "E100",
+     "target_event_id": "E99"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   }
+  ]
+ },
+ "events_last5": {
+  "count": 5,
+  "events": [
+   {
+    "id": "E97",
+    "payload": {
+     "reason": "synthetic test",
+     "replacement_event_id": "E96",
+     "target_event_id": "E32"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   },
+   {
+    "dedupe_key": "833768afb6a859447937dcfbd94b2c32804fadd1434217177040942cd114dc20",
+    "id": "E98",
+    "payload": {
+     "code": {
+      "code": "5792-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-02-06T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "unmapped metric",
+     "repeat": false,
+     "unit": "mg/dL",
+     "unit_original": "mg/dL",
+     "value_quantity": 1.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "d15b2ca2efadd9b48c2c01ebe889b2a16f4623b1a6e447cc75e1f5e0ff4d9583",
+    "id": "E99",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "document": "doc-1",
+      "kind": "user_upload",
+      "record_id": "d1"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 41.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": true,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "30204a0b0914d369f3cd76e28e30af1a77799273b8313061f4586d5a2818f962",
+    "id": "E100",
+    "payload": {
+     "code": {
+      "code": "1751-7",
+      "system": "loinc"
+     },
+     "effective_at": "2026-05-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "measurement",
+     "origin": {
+      "document": "doc-1",
+      "kind": "user_upload",
+      "record_id": "d1"
+     },
+     "original_text": "Albumin",
+     "repeat": false,
+     "unit": "g/L",
+     "unit_original": "g/L",
+     "value_quantity": 42.0
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "id": "E101",
+    "payload": {
+     "reason": "new version of document doc-1",
+     "replacement_event_id": "E100",
+     "target_event_id": "E99"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   }
+  ]
+ },
+ "events_obs": {
+  "count": 3,
+  "events": [
+   {
+    "dedupe_key": "96afef5a32693059a56c9c1a1a440a8e32bcc46921b3c2270abceb14402e6859",
+    "id": "E86",
+    "payload": {
+     "clinical_status": "active",
+     "code": {
+      "code": "1000",
+      "system": "rxnorm"
+     },
+     "dose": "1 unit",
+     "effective_at": "2026-02-01T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-a",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "ffdfbdb71b8aa600c352db6ea788d574d6f4631116cefb965d11915eb7764cd6",
+    "id": "E87",
+    "payload": {
+     "clinical_status": "active",
+     "effective_at": "2026-02-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-b",
+     "repeat": false,
+     "value_text": "text"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   },
+   {
+    "dedupe_key": "11961b1a61eb4c399ed28f2d8feede6d4a9ccd31a56db2797e4390b283e67921",
+    "id": "E88",
+    "payload": {
+     "clinical_status": "stopped",
+     "effective_at": "2026-03-02T12:00:00Z",
+     "effective_basis": "document",
+     "kind": "medication",
+     "origin": {
+      "kind": "user_upload"
+     },
+     "original_text": "test-drug-b",
+     "repeat": false,
+     "value_text": "stopped"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "observation"
+   }
+  ]
+ },
+ "events_retraction": {
+  "count": 3,
+  "events": [
+   {
+    "id": "E95",
+    "payload": {
+     "reason": "synthetic test",
+     "target_event_id": "E92"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   },
+   {
+    "id": "E97",
+    "payload": {
+     "reason": "synthetic test",
+     "replacement_event_id": "E96",
+     "target_event_id": "E32"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   },
+   {
+    "id": "E101",
+    "payload": {
+     "reason": "new version of document doc-1",
+     "replacement_event_id": "E100",
+     "target_event_id": "E99"
+    },
+    "recorded_at": "2026-06-01T00:00:00Z",
+    "retracted": false,
+    "type": "retraction"
+   }
+  ]
+ },
+ "glucose": {
+  "accepted": [
+   "E29",
+   "E30",
+   "E31",
+   "E32",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E69",
+   "E70",
+   "E71",
+   "E72",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 49,
+   "duplicate": 1,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [
+   "E30"
+  ],
+  "rejected": [],
+  "warnings": []
+ },
+ "glucose_replay": {
+  "accepted": [
+   "E78",
+   "E79"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 2,
+   "duplicate": 48,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [
+   "E29",
+   "E30",
+   "E31",
+   "E32",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E30",
+   "E71",
+   "E72",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77"
+  ],
+  "rejected": [],
+  "warnings": []
+ },
+ "instances": [
+  {
+   "active_observations": 96,
+   "instance": "g",
+   "states": [],
+   "subject": {
+    "birth_year": 1970,
+    "deid_profile": "plsi-limited-v1",
+    "sex": "F"
+   }
+  }
+ ],
+ "monthly1": {
+  "accepted": [
+   "E80",
+   "E81"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 2,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "monthly2": {
+  "accepted": [
+   "E82",
+   "E83",
+   "E84",
+   "E85"
+  ],
+  "conflicts": [
+   {
+    "coordinate": "sleep_duration",
+    "index": 0,
+    "month": "2026-03",
+    "with": "E81"
+   },
+   {
+    "coordinate": "sleep_duration",
+    "index": 1,
+    "month": "2026-03",
+    "with": "E81"
+   }
+  ],
+  "counts": {
+   "accepted": 4,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": [
+   "CONFLICT: 0",
+   "CONFLICT: 1"
+  ]
+ },
+ "observed_albumin": [
+  {
+   "effective_at": "2026-01-10T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E0"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E0"
+    ],
+    "observed_at": "2026-01-10T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "g/L",
+    "value": 45.0
+   }
+  },
+  {
+   "effective_at": "2026-04-20T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E9"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E9"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "g/L",
+    "value": 49.50000000000001
+   }
+  },
+  {
+   "effective_at": "2026-05-01T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E93"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E93"
+    ],
+    "observed_at": "2026-05-01T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "g/L",
+    "value": 40.0
+   }
+  },
+  {
+   "effective_at": "2026-05-01T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E94"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E94"
+    ],
+    "observed_at": "2026-05-01T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "g/L",
+    "value": 40.0
+   }
+  },
+  {
+   "effective_at": "2026-05-02T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E100"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E100"
+    ],
+    "observed_at": "2026-05-02T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "g/L",
+    "value": 42.0
+   }
+  }
+ ],
+ "observed_cardio_bmi": [
+  {
+   "effective_at": "2026-01-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E18",
+    "E20"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E18",
+     "E20"
+    ],
+    "observed_at": "2026-01-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-01-05T12:00:00+00:00",
+      "engine": "expr",
+      "model": "bmi"
+     },
+     "match": "derived",
+     "rule": "expr:bmi"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg/m2",
+    "value": 22.85714285714287
+   }
+  },
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E19",
+    "E21"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E19",
+     "E21"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-03-05T12:00:00+00:00",
+      "engine": "expr",
+      "model": "bmi"
+     },
+     "match": "derived",
+     "rule": "expr:bmi"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg/m2",
+    "value": 23.24380165289256
+   }
+  },
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E22"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E22"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:39156-5"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg/m2",
+    "value": 23.5
+   }
+  },
+  {
+   "effective_at": "2026-05-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E19",
+    "E23"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E19",
+     "E23"
+    ],
+    "observed_at": "2026-05-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-05-05T12:00:00+00:00",
+      "engine": "expr",
+      "model": "bmi"
+     },
+     "match": "derived",
+     "rule": "expr:bmi"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg/m2",
+    "value": 22.550757031250004
+   }
+  }
+ ],
+ "observed_cardio_fasting_glucose": [
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E24"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E24"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1558-6"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mg/dL",
+    "value": 95.0
+   }
+  },
+  {
+   "effective_at": "2026-04-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E25"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E25"
+    ],
+    "observed_at": "2026-04-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1558-6"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mg/dL",
+    "value": 99.0
+   }
+  },
+  {
+   "effective_at": "2026-05-17T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E72"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E72"
+    ],
+    "observed_at": "2026-05-17T08:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 18.016,
+      "from_unit": "mmol/L"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mg/dL",
+    "value": 99.088
+   }
+  }
+ ],
+ "observed_cardio_homa_ir": [
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E24",
+    "E27"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E24",
+     "E27"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-03-05T12:00:00+00:00",
+      "engine": "expr",
+      "model": "homa_ir"
+     },
+     "match": "derived",
+     "rule": "expr:homa_ir"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "1",
+    "value": 1.4061574896388398
+   }
+  },
+  {
+   "effective_at": "2026-04-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E25",
+    "E28"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E25",
+     "E28"
+    ],
+    "observed_at": "2026-04-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-04-05T12:00:00+00:00",
+      "engine": "expr",
+      "model": "homa_ir"
+     },
+     "match": "derived",
+     "rule": "expr:homa_ir"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "1",
+    "value": 1.9538188277087036
+   }
+  }
+ ],
+ "observed_cardio_weight": [
+  {
+   "effective_at": "2026-01-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E20"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E20"
+    ],
+    "observed_at": "2026-01-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:29463-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg",
+    "value": 70.0
+   }
+  },
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E21"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E21"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:29463-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg",
+    "value": 72.0
+   }
+  },
+  {
+   "effective_at": "2026-05-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E23"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E23"
+    ],
+    "observed_at": "2026-05-05T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.45359237,
+      "from_unit": "[lb_av]"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:29463-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "kg",
+    "value": 69.85322498
+   }
+  }
+ ],
+ "observed_glucose": [
+  {
+   "effective_at": "2026-01-10T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E2"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E2"
+    ],
+    "observed_at": "2026-01-10T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-03-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E24"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E24"
+    ],
+    "observed_at": "2026-03-05T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.0555062167,
+      "from_unit": "mg/dL"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:1558-6"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.2730905865
+   }
+  },
+  {
+   "effective_at": "2026-04-05T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E25"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E25"
+    ],
+    "observed_at": "2026-04-05T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.0555062167,
+      "from_unit": "mg/dL"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:1558-6"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.4951154533
+   }
+  },
+  {
+   "effective_at": "2026-04-06T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E26"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E26"
+    ],
+    "observed_at": "2026-04-06T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.0555062167,
+      "from_unit": "mg/dL"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:1558-6"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 7.770870338
+   }
+  },
+  {
+   "effective_at": "2026-04-20T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E11"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E11"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.5
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E29"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E29"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E30"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E30"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E31"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E31"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E33"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E33"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E34"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E34"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E35"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E35"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E36"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E36"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E37"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E37"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E38"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E38"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E39"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E39"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E40"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E40"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E41"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E41"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E42"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E42"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E43"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E43"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E44"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E44"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E45"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E45"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E46"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E46"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E47"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E47"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E48"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E48"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E49"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E49"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E50"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E50"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E51"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E51"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E52"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E52"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E53"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E53"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E54"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E54"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E55"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E55"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E56"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E56"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E57"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E57"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E58"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E58"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E59"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E59"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E60"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E60"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E61"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E61"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E62"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E62"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E63"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E63"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E64"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E64"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E65"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E65"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E66"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E66"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E67"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E67"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E68"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E68"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E69"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E69"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E70"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E70"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E78"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E78"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E79"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E79"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.0
+   }
+  },
+  {
+   "effective_at": "2026-05-15T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E96"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E96"
+    ],
+    "observed_at": "2026-05-15T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 8.0
+   }
+  },
+  {
+   "effective_at": "2026-05-16T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E71"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E71"
+    ],
+    "observed_at": "2026-05-16T08:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.0555062167,
+      "from_unit": "mg/dL"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 4.995559503
+   }
+  },
+  {
+   "effective_at": "2026-05-17T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E72"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E72"
+    ],
+    "observed_at": "2026-05-17T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.5
+   }
+  },
+  {
+   "effective_at": "2026-05-17T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E73"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E73"
+    ],
+    "observed_at": "2026-05-17T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 7.0
+   }
+  },
+  {
+   "effective_at": "2026-05-18T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E74"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "comparator": "<",
+    "event_ids": [
+     "E74"
+    ],
+    "observed_at": "2026-05-18T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 4.0
+   }
+  },
+  {
+   "effective_at": "2026-05-19T08:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E75"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E75"
+    ],
+    "note": "cannot convert furlongs to mmol/L (no generic scale or sourced conversion)",
+    "observed_at": "2026-05-19T08:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "error",
+    "unit": "mmol/L"
+   }
+  },
+  {
+   "effective_at": "2026-05-19T09:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E76"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E76"
+    ],
+    "note": "not a numeric value",
+    "observed_at": "2026-05-19T09:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "error",
+    "unit": "mmol/L"
+   }
+  },
+  {
+   "effective_at": "2026-05-20T12:00:00Z",
+   "effective_basis": "assumed",
+   "event_ids": [
+    "E77"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E77"
+    ],
+    "observed_at": "2026-05-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.9
+   }
+  }
+ ],
+ "observed_phenoage": [
+  {
+   "effective_at": "2026-01-10T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E0",
+     "E1",
+     "E2",
+     "E3",
+     "E4",
+     "E5",
+     "E6",
+     "E7",
+     "E8"
+    ],
+    "observed_at": "2026-01-10T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-01-10T12:00:00+00:00",
+      "engine": "native",
+      "model": "phenoage"
+     },
+     "match": "derived",
+     "rule": "plsi.derive.phenoage"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "a",
+    "value": 47.5487886987259
+   }
+  },
+  {
+   "effective_at": "2026-04-20T12:00:00Z",
+   "effective_basis": "document",
+   "event_ids": [
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17"
+   ],
+   "recorded_at": "2026-06-01T00:00:00Z",
+   "value": {
+    "event_ids": [
+     "E9",
+     "E10",
+     "E11",
+     "E12",
+     "E13",
+     "E14",
+     "E15",
+     "E16",
+     "E17"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-04-20T12:00:00+00:00",
+      "engine": "native",
+      "model": "phenoage"
+     },
+     "match": "derived",
+     "rule": "plsi.derive.phenoage"
+    },
+    "series": [],
+    "status": "present",
+    "unit": "a",
+    "value": 55.6999558746101
+   }
+  }
+ ],
+ "pheno1": {
+  "accepted": [
+   "E0",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 9,
+   "duplicate": 0,
+   "rejected": 1
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [
+   {
+    "error": "VALIDATION_ERROR: kind: Input should be 'measurement', 'medication', 'condition', 'allergy', 'intervention', 'symptom', 'lifestyle', 'artifact', 'note', 'goal' or 'preference'",
+    "index": 9
+   }
+  ],
+  "warnings": []
+ },
+ "pheno1_replay": {
+  "accepted": [],
+  "conflicts": [],
+  "counts": {
+   "accepted": 0,
+   "duplicate": 9,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [
+   "E0",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8"
+  ],
+  "rejected": [],
+  "warnings": []
+ },
+ "pheno2": {
+  "accepted": [
+   "E9",
+   "E10",
+   "E11",
+   "E12",
+   "E13",
+   "E14",
+   "E15",
+   "E16",
+   "E17"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 9,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "pheno2_dry": {
+  "accepted": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 9,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": true,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "project_blood_phenoage": {
+  "as_of": "2026-06-01T00:00:00Z",
+  "coordinates": {
+   "albumin": {
+    "event_ids": [
+     "E100"
+    ],
+    "observed_at": "2026-05-02T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1751-7"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E0"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 45.0
+     },
+     {
+      "event_ids": [
+       "E9"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 49.50000000000001
+     },
+     {
+      "event_ids": [
+       "E93"
+      ],
+      "t": "2026-05-01T12:00:00Z",
+      "value": 40.0
+     },
+     {
+      "event_ids": [
+       "E94"
+      ],
+      "t": "2026-05-01T12:00:00Z",
+      "value": 40.0
+     },
+     {
+      "event_ids": [
+       "E100"
+      ],
+      "t": "2026-05-02T12:00:00Z",
+      "value": 42.0
+     }
+    ],
+    "status": "present",
+    "unit": "g/L",
+    "value": 42.0
+   },
+   "alp": {
+    "event_ids": [
+     "E16"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:6768-6"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E7"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 70.0
+     },
+     {
+      "event_ids": [
+       "E16"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 77.0
+     }
+    ],
+    "status": "present",
+    "unit": "U/L",
+    "value": 77.0
+   },
+   "chronological_age": {
+    "event_ids": [
+     "E9",
+     "E10",
+     "E11",
+     "E12",
+     "E13",
+     "E14",
+     "E15",
+     "E16",
+     "E17"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-06-01T00:00:00+00:00",
+      "engine": "native",
+      "model": "chronological_age"
+     },
+     "match": "derived",
+     "rule": "plsi.derive.chronological_age"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E0",
+       "E1",
+       "E2",
+       "E3",
+       "E4",
+       "E5",
+       "E6",
+       "E7",
+       "E8"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 55.52465753424667
+     },
+     {
+      "event_ids": [
+       "E9",
+       "E10",
+       "E11",
+       "E12",
+       "E13",
+       "E14",
+       "E15",
+       "E16",
+       "E17"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 55.798630136986276
+     }
+    ],
+    "status": "present",
+    "unit": "a",
+    "value": 55.798630136986276
+   },
+   "creatinine": {
+    "event_ids": [
+     "E10"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2160-0"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E1"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 80.0
+     },
+     {
+      "event_ids": [
+       "E10"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 88.0
+     }
+    ],
+    "status": "present",
+    "unit": "umol/L",
+    "value": 88.0
+   },
+   "crp": {
+    "event_ids": [
+     "E12"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:1988-5"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E3"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 0.2
+     },
+     {
+      "event_ids": [
+       "E12"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 0.22000000000000003
+     }
+    ],
+    "status": "present",
+    "unit": "mg/dL",
+    "value": 0.22000000000000003
+   },
+   "glucose": {
+    "event_ids": [
+     "E77"
+    ],
+    "observed_at": "2026-05-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E59"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E60"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E61"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E62"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E63"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E64"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E65"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E66"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E67"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E68"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E69"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E70"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E78"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E79"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 5.0
+     },
+     {
+      "event_ids": [
+       "E96"
+      ],
+      "t": "2026-05-15T08:00:00Z",
+      "value": 8.0
+     },
+     {
+      "event_ids": [
+       "E71"
+      ],
+      "t": "2026-05-16T08:00:00Z",
+      "value": 4.995559503
+     },
+     {
+      "event_ids": [
+       "E72"
+      ],
+      "t": "2026-05-17T08:00:00Z",
+      "value": 5.5
+     },
+     {
+      "event_ids": [
+       "E73"
+      ],
+      "t": "2026-05-17T08:00:00Z",
+      "value": 7.0
+     },
+     {
+      "comparator": "<",
+      "event_ids": [
+       "E74"
+      ],
+      "t": "2026-05-18T08:00:00Z",
+      "value": 4.0
+     },
+     {
+      "event_ids": [
+       "E77"
+      ],
+      "t": "2026-05-20T12:00:00Z",
+      "value": 5.9
+     }
+    ],
+    "status": "present",
+    "unit": "mmol/L",
+    "value": 5.9
+   },
+   "lymphocyte_pct": {
+    "event_ids": [
+     "E13"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:736-9"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E4"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 30.0
+     },
+     {
+      "event_ids": [
+       "E13"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 33.0
+     }
+    ],
+    "status": "present",
+    "unit": "%",
+    "value": 33.0
+   },
+   "mcv": {
+    "event_ids": [
+     "E14"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:787-2"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E5"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 90.0
+     },
+     {
+      "event_ids": [
+       "E14"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 99.00000000000001
+     }
+    ],
+    "status": "present",
+    "unit": "fL",
+    "value": 99.00000000000001
+   },
+   "phenoage": {
+    "event_ids": [
+     "E9",
+     "E10",
+     "E11",
+     "E12",
+     "E13",
+     "E14",
+     "E15",
+     "E16",
+     "E17"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-06-01T00:00:00+00:00",
+      "engine": "native",
+      "model": "phenoage"
+     },
+     "match": "derived",
+     "rule": "plsi.derive.phenoage"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E0",
+       "E1",
+       "E2",
+       "E3",
+       "E4",
+       "E5",
+       "E6",
+       "E7",
+       "E8"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 47.5487886987259
+     },
+     {
+      "event_ids": [
+       "E9",
+       "E10",
+       "E11",
+       "E12",
+       "E13",
+       "E14",
+       "E15",
+       "E16",
+       "E17"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 55.6999558746101
+     }
+    ],
+    "status": "present",
+    "unit": "a",
+    "value": 55.6999558746101
+   },
+   "phenoage_acceleration": {
+    "event_ids": [
+     "E9",
+     "E10",
+     "E11",
+     "E12",
+     "E13",
+     "E14",
+     "E15",
+     "E16",
+     "E17"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-06-01T00:00:00+00:00",
+      "engine": "native",
+      "model": "phenoage_acceleration"
+     },
+     "match": "derived",
+     "rule": "plsi.derive.phenoage_acceleration"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E0",
+       "E1",
+       "E2",
+       "E3",
+       "E4",
+       "E5",
+       "E6",
+       "E7",
+       "E8"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": -7.975868835520771
+     },
+     {
+      "event_ids": [
+       "E9",
+       "E10",
+       "E11",
+       "E12",
+       "E13",
+       "E14",
+       "E15",
+       "E16",
+       "E17"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": -0.09867426237617849
+     }
+    ],
+    "status": "present",
+    "unit": "a",
+    "value": -0.09867426237617849
+   },
+   "rdw": {
+    "event_ids": [
+     "E15"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:788-0"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E6"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 13.0
+     },
+     {
+      "event_ids": [
+       "E15"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 14.3
+     }
+    ],
+    "status": "present",
+    "unit": "%",
+    "value": 14.3
+   },
+   "wbc": {
+    "event_ids": [
+     "E17"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:6690-2"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E8"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 6.0
+     },
+     {
+      "event_ids": [
+       "E17"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 6.6000000000000005
+     }
+    ],
+    "status": "present",
+    "unit": "10*3/uL",
+    "value": 6.6000000000000005
+   }
+  },
+  "gaps": [],
+  "generated_at": "2026-06-01T00:00:00Z",
+  "kind": "plsi_state",
+  "map_hash": "sha256:0f832ff1c7998b7e18677be5b13c7b34554ed2040dbf7c7dc8385f80917c5b33",
+  "map_id": "blood_phenoage",
+  "map_version": "1.0.0",
+  "schema_version": 1,
+  "unmapped_observations": [
+   "E18",
+   "E19",
+   "E20",
+   "E21",
+   "E22",
+   "E23",
+   "E27",
+   "E28",
+   "E80",
+   "E81",
+   "E82",
+   "E83",
+   "E84",
+   "E85",
+   "E86",
+   "E87",
+   "E88",
+   "E89",
+   "E90",
+   "E91",
+   "E98"
+  ]
+ },
+ "project_cardiometabolic": {
+  "as_of": "2026-06-01T00:00:00Z",
+  "coordinates": {
+   "apob": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "bmi": {
+    "event_ids": [
+     "E19",
+     "E23"
+    ],
+    "observed_at": "2026-05-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-06-01T00:00:00+00:00",
+      "engine": "expr",
+      "model": "bmi"
+     },
+     "match": "derived",
+     "rule": "expr:bmi"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E18",
+       "E20"
+      ],
+      "t": "2026-01-05T12:00:00Z",
+      "value": 22.85714285714287
+     },
+     {
+      "event_ids": [
+       "E19",
+       "E21"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 23.24380165289256
+     },
+     {
+      "event_ids": [
+       "E22"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 23.5
+     },
+     {
+      "event_ids": [
+       "E19",
+       "E23"
+      ],
+      "t": "2026-05-05T12:00:00Z",
+      "value": 22.550757031250004
+     }
+    ],
+    "status": "present",
+    "unit": "kg/m2",
+    "value": 22.550757031250004
+   },
+   "dbp": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mm[Hg]"
+   },
+   "fasting_glucose": {
+    "event_ids": [
+     "E72"
+    ],
+    "observed_at": "2026-05-17T08:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 18.016,
+      "from_unit": "mmol/L"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:2345-7"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E24"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 95.0
+     },
+     {
+      "event_ids": [
+       "E25"
+      ],
+      "t": "2026-04-05T12:00:00Z",
+      "value": 99.0
+     },
+     {
+      "event_ids": [
+       "E72"
+      ],
+      "t": "2026-05-17T08:00:00Z",
+      "value": 99.088
+     }
+    ],
+    "status": "present",
+    "unit": "mg/dL",
+    "value": 99.088
+   },
+   "fasting_insulin": {
+    "event_ids": [
+     "E28"
+    ],
+    "observed_at": "2026-04-05T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:27873-9"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E27"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 6.0
+     },
+     {
+      "event_ids": [
+       "E28"
+      ],
+      "t": "2026-04-05T12:00:00Z",
+      "value": 8.0
+     }
+    ],
+    "status": "present",
+    "unit": "u[IU]/mL",
+    "value": 8.0
+   },
+   "hba1c": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "%"
+   },
+   "hdl_c": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "height": {
+    "event_ids": [
+     "E19"
+    ],
+    "observed_at": "2026-02-01T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.01,
+      "from_unit": "cm"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:8302-2"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E18"
+      ],
+      "t": "2025-06-01T12:00:00Z",
+      "value": 1.75
+     },
+     {
+      "event_ids": [
+       "E19"
+      ],
+      "t": "2026-02-01T12:00:00Z",
+      "value": 1.76
+     }
+    ],
+    "status": "present",
+    "unit": "m",
+    "value": 1.76
+   },
+   "homa_ir": {
+    "event_ids": [
+     "E25",
+     "E28"
+    ],
+    "observed_at": "2026-04-05T12:00:00Z",
+    "provenance": {
+     "derivation": {
+      "computed_at": "2026-06-01T00:00:00+00:00",
+      "engine": "expr",
+      "model": "homa_ir"
+     },
+     "match": "derived",
+     "rule": "expr:homa_ir"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E24",
+       "E27"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 1.4061574896388398
+     },
+     {
+      "event_ids": [
+       "E25",
+       "E28"
+      ],
+      "t": "2026-04-05T12:00:00Z",
+      "value": 1.9538188277087036
+     }
+    ],
+    "status": "present",
+    "unit": "1",
+    "value": 1.9538188277087036
+   },
+   "hs_crp": {
+    "event_ids": [
+     "E12"
+    ],
+    "observed_at": "2026-04-20T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 10.0,
+      "from_unit": "mg/dL"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:1988-5"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E3"
+      ],
+      "t": "2026-01-10T12:00:00Z",
+      "value": 2.0
+     },
+     {
+      "event_ids": [
+       "E12"
+      ],
+      "t": "2026-04-20T12:00:00Z",
+      "value": 2.2
+     }
+    ],
+    "status": "present",
+    "unit": "mg/L",
+    "value": 2.2
+   },
+   "ldl_c": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "lpa_mass": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "lpa_molar": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "nmol/L"
+   },
+   "sbp": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mm[Hg]"
+   },
+   "total_cholesterol": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "triglycerides": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mg/dL"
+   },
+   "waist": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "cm"
+   },
+   "weight": {
+    "event_ids": [
+     "E23"
+    ],
+    "observed_at": "2026-05-05T12:00:00Z",
+    "provenance": {
+     "conversion": {
+      "factor": 0.45359237,
+      "from_unit": "[lb_av]"
+     },
+     "match": "code",
+     "rule": "accepts:loinc:29463-7"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E20"
+      ],
+      "t": "2026-01-05T12:00:00Z",
+      "value": 70.0
+     },
+     {
+      "event_ids": [
+       "E21"
+      ],
+      "t": "2026-03-05T12:00:00Z",
+      "value": 72.0
+     },
+     {
+      "event_ids": [
+       "E23"
+      ],
+      "t": "2026-05-05T12:00:00Z",
+      "value": 69.85322498
+     }
+    ],
+    "status": "present",
+    "unit": "kg",
+    "value": 69.85322498
+   }
+  },
+  "gaps": [
+   {
+    "coordinate": "total_cholesterol",
+    "reason": "missing",
+    "suggestion": "measure Total cholesterol and ingest the result (e.g. 2093-3, 14647-2, 35200-5)"
+   },
+   {
+    "coordinate": "ldl_c",
+    "reason": "missing",
+    "suggestion": "measure LDL cholesterol and ingest the result (e.g. 13457-7, 39469-2, 96259-7)"
+   },
+   {
+    "coordinate": "hdl_c",
+    "reason": "missing",
+    "suggestion": "measure HDL cholesterol and ingest the result (e.g. 2085-9, 14646-4, 18263-4)"
+   },
+   {
+    "coordinate": "triglycerides",
+    "reason": "missing",
+    "suggestion": "measure Triglycerides and ingest the result (e.g. 2571-8, 14927-8, 3048-6)"
+   },
+   {
+    "coordinate": "apob",
+    "reason": "missing",
+    "suggestion": "measure Apolipoprotein B and ingest the result (e.g. 1884-6, 1871-3, 76482-9)"
+   },
+   {
+    "coordinate": "lpa_mass",
+    "reason": "missing",
+    "suggestion": "measure Lipoprotein(a), mass and ingest the result (e.g. 10835-7, 1881-2)"
+   },
+   {
+    "coordinate": "lpa_molar",
+    "reason": "missing",
+    "suggestion": "measure Lipoprotein(a), molar and ingest the result (e.g. 43583-4, 107162-0)"
+   },
+   {
+    "coordinate": "hba1c",
+    "reason": "missing",
+    "suggestion": "measure Hemoglobin A1c (NGSP) and ingest the result (e.g. 4548-4, 17856-6, 4549-2)"
+   },
+   {
+    "coordinate": "sbp",
+    "reason": "missing",
+    "suggestion": "measure Systolic blood pressure and ingest the result (e.g. 8480-6, 8459-0, 8460-8)"
+   },
+   {
+    "coordinate": "dbp",
+    "reason": "missing",
+    "suggestion": "measure Diastolic blood pressure and ingest the result (e.g. 8462-4, 8453-3, 8454-1)"
+   },
+   {
+    "coordinate": "waist",
+    "reason": "missing",
+    "suggestion": "measure Waist circumference and ingest the result (e.g. 8280-0, 56114-2, 56115-9)"
+   }
+  ],
+  "generated_at": "2026-06-01T00:00:00Z",
+  "kind": "plsi_state",
+  "map_hash": "sha256:07c9be1146b215dd4ed4bc65abc6e4f7978e9cc938130106e55a6671120fabaa",
+  "map_id": "cardiometabolic",
+  "map_version": "1.3.0",
+  "schema_version": 1,
+  "unmapped_observations": [
+   "E0",
+   "E1",
+   "E2",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8",
+   "E9",
+   "E10",
+   "E11",
+   "E13",
+   "E14",
+   "E15",
+   "E16",
+   "E17",
+   "E26",
+   "E29",
+   "E30",
+   "E31",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E69",
+   "E70",
+   "E71",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77",
+   "E78",
+   "E79",
+   "E80",
+   "E81",
+   "E82",
+   "E83",
+   "E84",
+   "E85",
+   "E86",
+   "E87",
+   "E88",
+   "E89",
+   "E90",
+   "E91",
+   "E93",
+   "E94",
+   "E96",
+   "E98",
+   "E100"
+  ]
+ },
+ "project_care_context": {
+  "as_of": "2026-06-01T00:00:00Z",
+  "coordinates": {
+   "active_conditions": {
+    "event_ids": [
+     "E89"
+    ],
+    "series": [],
+    "status": "present",
+    "value": [
+     {
+      "clinical_status": "active",
+      "code": {
+       "code": "I10",
+       "system": "icd10cm"
+      },
+      "event_id": "E89",
+      "text": "Test Condition"
+     }
+    ]
+   },
+   "active_medications": {
+    "event_ids": [
+     "E86"
+    ],
+    "series": [],
+    "status": "present",
+    "value": [
+     {
+      "clinical_status": "active",
+      "code": {
+       "code": "1000",
+       "system": "rxnorm"
+      },
+      "dose": "1 unit",
+      "event_id": "E86",
+      "text": "test-drug-a"
+     }
+    ]
+   },
+   "allergies": {
+    "event_ids": [
+     "E90"
+    ],
+    "series": [],
+    "status": "present",
+    "value": [
+     {
+      "code": {
+       "code": "99",
+       "system": "snomed"
+      },
+      "event_id": "E90",
+      "text": "test-allergen"
+     }
+    ]
+   }
+  },
+  "gaps": [],
+  "generated_at": "2026-06-01T00:00:00Z",
+  "kind": "plsi_state",
+  "map_hash": "sha256:38f49240e4189388f666807f5bd22e52db027082975e9060b3210b40443e1c18",
+  "map_id": "care_context",
+  "map_version": "1.0.0",
+  "schema_version": 1,
+  "unmapped_observations": [
+   "E0",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8",
+   "E9",
+   "E10",
+   "E11",
+   "E12",
+   "E13",
+   "E14",
+   "E15",
+   "E16",
+   "E17",
+   "E18",
+   "E19",
+   "E20",
+   "E21",
+   "E22",
+   "E23",
+   "E24",
+   "E25",
+   "E26",
+   "E27",
+   "E28",
+   "E29",
+   "E30",
+   "E31",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E69",
+   "E70",
+   "E71",
+   "E72",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77",
+   "E78",
+   "E79",
+   "E80",
+   "E81",
+   "E82",
+   "E83",
+   "E84",
+   "E85",
+   "E91",
+   "E93",
+   "E94",
+   "E96",
+   "E98",
+   "E100"
+  ]
+ },
+ "project_lifestyle_context": {
+  "as_of": "2026-06-01T00:00:00Z",
+  "coordinates": {
+   "active_lifestyle": {
+    "event_ids": [
+     "E91"
+    ],
+    "series": [],
+    "status": "present",
+    "value": [
+     {
+      "event_id": "E91",
+      "text": "walks daily"
+     }
+    ]
+   },
+   "alcohol_days_week": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "d/wk"
+   },
+   "alcohol_drinks_week": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "/wk"
+   },
+   "audit_c": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "1"
+   },
+   "cigarettes_day": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "/d"
+   }
+  },
+  "gaps": [
+   {
+    "coordinate": "alcohol_drinks_week",
+    "reason": "missing",
+    "suggestion": "measure Alcoholic drinks per week (standard drinks, reported) and ingest the result (e.g. 44940-5, 105992-2)"
+   },
+   {
+    "coordinate": "alcohol_days_week",
+    "reason": "missing",
+    "suggestion": "measure Days per week with alcoholic drinks (reported) and ingest the result (e.g. 81032-5)"
+   },
+   {
+    "coordinate": "audit_c",
+    "reason": "missing",
+    "suggestion": "measure AUDIT-C total score (0-12) and ingest the result (e.g. 75626-2)"
+   },
+   {
+    "coordinate": "cigarettes_day",
+    "reason": "missing",
+    "suggestion": "measure Cigarettes smoked per day now (reported) and ingest the result (e.g. 64218-1)"
+   }
+  ],
+  "generated_at": "2026-06-01T00:00:00Z",
+  "kind": "plsi_state",
+  "map_hash": "sha256:98d10603ee481512cd1c94f3fe0219ee5f6ef90760f911c14611af7ed5750624",
+  "map_id": "lifestyle_context",
+  "map_version": "0.2.0",
+  "schema_version": 1,
+  "unmapped_observations": [
+   "E0",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8",
+   "E9",
+   "E10",
+   "E11",
+   "E12",
+   "E13",
+   "E14",
+   "E15",
+   "E16",
+   "E17",
+   "E18",
+   "E19",
+   "E20",
+   "E21",
+   "E22",
+   "E23",
+   "E24",
+   "E25",
+   "E26",
+   "E27",
+   "E28",
+   "E29",
+   "E30",
+   "E31",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E69",
+   "E70",
+   "E71",
+   "E72",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77",
+   "E78",
+   "E79",
+   "E80",
+   "E81",
+   "E82",
+   "E83",
+   "E84",
+   "E85",
+   "E86",
+   "E87",
+   "E88",
+   "E89",
+   "E90",
+   "E93",
+   "E94",
+   "E96",
+   "E98",
+   "E100"
+  ]
+ },
+ "project_sleep_activity": {
+  "as_of": "2026-06-01T00:00:00Z",
+  "coordinates": {
+   "active_days": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "d/wk"
+   },
+   "daily_steps": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "/d"
+   },
+   "exercise_minutes": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "min/wk"
+   },
+   "hrv_rmssd": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "ms"
+   },
+   "hrv_sdnn": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "ms"
+   },
+   "resting_heart_rate": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "/min"
+   },
+   "sleep_duration": {
+    "event_ids": [
+     "E85"
+    ],
+    "observed_at": "2026-04-28T12:00:00Z",
+    "provenance": {
+     "match": "code",
+     "rule": "accepts:loinc:93832-4"
+    },
+    "series": [
+     {
+      "event_ids": [
+       "E80"
+      ],
+      "t": "2026-02-28T12:00:00Z",
+      "value": 420.0
+     },
+     {
+      "event_ids": [
+       "E81"
+      ],
+      "t": "2026-03-28T12:00:00Z",
+      "value": 410.0
+     },
+     {
+      "event_ids": [
+       "E82"
+      ],
+      "t": "2026-03-28T12:00:00Z",
+      "value": 430.0
+     },
+     {
+      "event_ids": [
+       "E83"
+      ],
+      "t": "2026-03-28T12:00:00Z",
+      "value": 431.0
+     },
+     {
+      "event_ids": [
+       "E84"
+      ],
+      "t": "2026-04-28T12:00:00Z",
+      "value": 400.0
+     },
+     {
+      "event_ids": [
+       "E85"
+      ],
+      "t": "2026-04-28T12:00:00Z",
+      "value": 401.0
+     }
+    ],
+    "status": "present",
+    "unit": "min",
+    "value": 401.0
+   },
+   "vo2_max": {
+    "event_ids": [],
+    "series": [],
+    "status": "missing",
+    "unit": "mL/min/kg"
+   }
+  },
+  "gaps": [
+   {
+    "coordinate": "resting_heart_rate",
+    "reason": "missing",
+    "suggestion": "measure Resting heart rate (calendar-month mean) and ingest the result (e.g. 40443-4)"
+   },
+   {
+    "coordinate": "hrv_sdnn",
+    "reason": "missing",
+    "suggestion": "measure Heart rate variability, SDNN (calendar-month mean) and ingest the result (e.g. 80404-7, 112429-6)"
+   },
+   {
+    "coordinate": "hrv_rmssd",
+    "reason": "missing",
+    "suggestion": "measure Heart rate variability, RMSSD (calendar-month mean) and ingest the result (e.g. sleep_activity.hrv_rmssd)"
+   },
+   {
+    "coordinate": "daily_steps",
+    "reason": "missing",
+    "suggestion": "measure Daily steps (calendar-month mean) and ingest the result (e.g. 41951-5, 41950-7)"
+   },
+   {
+    "coordinate": "exercise_minutes",
+    "reason": "missing",
+    "suggestion": "measure Moderate-or-harder exercise minutes per week (calendar-month mean) and ingest the result (e.g. 89574-8)"
+   },
+   {
+    "coordinate": "active_days",
+    "reason": "missing",
+    "suggestion": "measure Days per week with 30 or more exercise minutes (calendar-month mean) and ingest the result (e.g. 77293-9)"
+   },
+   {
+    "coordinate": "vo2_max",
+    "reason": "missing",
+    "suggestion": "measure VO2max estimate (one reading per row) and ingest the result (e.g. 94122-9)"
+   }
+  ],
+  "generated_at": "2026-06-01T00:00:00Z",
+  "kind": "plsi_state",
+  "map_hash": "sha256:cf3229bcfd28bb1db731b02bc03c06f7f8438ba65492f57093d1b4571fdc9f9f",
+  "map_id": "sleep_activity",
+  "map_version": "0.4.0",
+  "schema_version": 1,
+  "unmapped_observations": [
+   "E0",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8",
+   "E9",
+   "E10",
+   "E11",
+   "E12",
+   "E13",
+   "E14",
+   "E15",
+   "E16",
+   "E17",
+   "E18",
+   "E19",
+   "E20",
+   "E21",
+   "E22",
+   "E23",
+   "E24",
+   "E25",
+   "E26",
+   "E27",
+   "E28",
+   "E29",
+   "E30",
+   "E31",
+   "E33",
+   "E34",
+   "E35",
+   "E36",
+   "E37",
+   "E38",
+   "E39",
+   "E40",
+   "E41",
+   "E42",
+   "E43",
+   "E44",
+   "E45",
+   "E46",
+   "E47",
+   "E48",
+   "E49",
+   "E50",
+   "E51",
+   "E52",
+   "E53",
+   "E54",
+   "E55",
+   "E56",
+   "E57",
+   "E58",
+   "E59",
+   "E60",
+   "E61",
+   "E62",
+   "E63",
+   "E64",
+   "E65",
+   "E66",
+   "E67",
+   "E68",
+   "E69",
+   "E70",
+   "E71",
+   "E72",
+   "E73",
+   "E74",
+   "E75",
+   "E76",
+   "E77",
+   "E78",
+   "E79",
+   "E86",
+   "E87",
+   "E88",
+   "E89",
+   "E90",
+   "E91",
+   "E93",
+   "E94",
+   "E96",
+   "E98",
+   "E100"
+  ]
+ },
+ "reingest_after_retract": {
+  "accepted": [
+   "E98"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 1,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "retract": {
+  "retraction_event_id": "E95",
+  "target_event_id": "E92"
+ },
+ "retract_replace": {
+  "replacement_event_id": "E96",
+  "retraction_event_id": "E97",
+  "target_event_id": "E32"
+ },
+ "retracted_ids": [
+  "E32",
+  "E92",
+  "E99"
+ ],
+ "revise1": {
+  "added": [
+   "E99"
+  ],
+  "counts": {
+   "added": 1,
+   "rejected": 0,
+   "removed": 0,
+   "replaced": 0,
+   "unchanged": 0
+  },
+  "document": "doc-1",
+  "dry_run": false,
+  "rejected": [],
+  "removed": [],
+  "replaced": []
+ },
+ "revise2": {
+  "added": [],
+  "counts": {
+   "added": 0,
+   "rejected": 0,
+   "removed": 0,
+   "replaced": 1,
+   "unchanged": 0
+  },
+  "document": "doc-1",
+  "dry_run": false,
+  "rejected": [],
+  "removed": [],
+  "replaced": [
+   {
+    "new": "E100",
+    "old": "E99"
+   }
+  ]
+ },
+ "select": [
+  {
+   "map_id": "blood_phenoage",
+   "missing": [],
+   "present": [
+    "albumin",
+    "creatinine",
+    "glucose",
+    "crp",
+    "lymphocyte_pct",
+    "mcv",
+    "rdw",
+    "alp",
+    "wbc",
+    "chronological_age",
+    "phenoage",
+    "phenoage_acceleration"
+   ],
+   "ratio": 1.0,
+   "tags": [
+    "aging_clock",
+    "blood",
+    "phenoage"
+   ],
+   "title": "Blood PhenoAge (Levine 2018)"
+  },
+  {
+   "map_id": "care_context",
+   "missing": [],
+   "present": [
+    "active_medications",
+    "active_conditions",
+    "allergies"
+   ],
+   "ratio": 1.0,
+   "tags": [
+    "care_context",
+    "screening"
+   ],
+   "title": "Care context"
+  },
+  {
+   "map_id": "cardiometabolic",
+   "missing": [
+    "total_cholesterol",
+    "ldl_c",
+    "hdl_c",
+    "triglycerides",
+    "apob",
+    "lpa_mass",
+    "lpa_molar",
+    "hba1c",
+    "sbp",
+    "dbp",
+    "waist"
+   ],
+   "present": [
+    "fasting_glucose",
+    "fasting_insulin",
+    "height",
+    "weight",
+    "bmi",
+    "hs_crp",
+    "homa_ir"
+   ],
+   "ratio": 0.389,
+   "tags": [
+    "cardiometabolic",
+    "lipids",
+    "glycaemia",
+    "blood_pressure"
+   ],
+   "title": "Cardiometabolic markers"
+  },
+  {
+   "map_id": "lifestyle_context",
+   "missing": [
+    "alcohol_drinks_week",
+    "alcohol_days_week",
+    "audit_c",
+    "cigarettes_day"
+   ],
+   "present": [
+    "active_lifestyle"
+   ],
+   "ratio": 0.2,
+   "tags": [
+    "lifestyle",
+    "exposures",
+    "substances",
+    "alcohol",
+    "smoking"
+   ],
+   "title": "Lifestyle context"
+  },
+  {
+   "map_id": "sleep_activity",
+   "missing": [
+    "resting_heart_rate",
+    "hrv_sdnn",
+    "hrv_rmssd",
+    "daily_steps",
+    "exercise_minutes",
+    "active_days",
+    "vo2_max"
+   ],
+   "present": [
+    "sleep_duration"
+   ],
+   "ratio": 0.125,
+   "tags": [
+    "sleep",
+    "recovery",
+    "activity",
+    "exercise",
+    "fitness",
+    "wearables"
+   ],
+   "title": "Sleep, recovery and activity"
+  },
+  {
+   "map_id": "body_composition",
+   "missing": [
+    "body_fat_pct",
+    "grip_strength"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "body_composition",
+    "adiposity",
+    "strength",
+    "muscle"
+   ],
+   "title": "Body composition and strength"
+  },
+  {
+   "map_id": "cgm",
+   "missing": [
+    "mean_glucose",
+    "gmi",
+    "glucose_cv",
+    "time_in_range",
+    "time_below_range_low",
+    "time_below_range_very_low",
+    "time_above_range_high",
+    "time_above_range_very_high"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "glucose",
+    "cgm",
+    "wearables",
+    "metabolic"
+   ],
+   "title": "Continuous glucose monitoring"
+  },
+  {
+   "map_id": "diet",
+   "missing": [
+    "energy_intake",
+    "protein_intake",
+    "fiber_intake",
+    "sodium_intake",
+    "total_sugars_intake"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "diet",
+    "nutrition",
+    "intake",
+    "food_log"
+   ],
+   "title": "Dietary intake"
+  },
+  {
+   "map_id": "hormones",
+   "missing": [
+    "testosterone_total",
+    "estradiol",
+    "shbg",
+    "dhea_s",
+    "igf_1",
+    "cortisol_morning"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "hormones",
+    "endocrine",
+    "blood"
+   ],
+   "title": "Sex and adrenal hormones"
+  },
+  {
+   "map_id": "imaging_scores",
+   "missing": [
+    "cac_agatston",
+    "carotid_imt",
+    "bmd_t_lumbar_spine",
+    "bmd_t_femoral_neck",
+    "almi"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "imaging",
+    "cardiovascular",
+    "bone",
+    "muscle"
+   ],
+   "title": "Imaging scores"
+  },
+  {
+   "map_id": "methylation_clocks",
+   "missing": [
+    "methylation_betas"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "aging_clock",
+    "methylation",
+    "biolearn"
+   ],
+   "title": "DNA methylation clocks (biolearn)"
+  },
+  {
+   "map_id": "personal_context",
+   "missing": [
+    "goals",
+    "preferences"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "goals",
+    "preferences"
+   ],
+   "title": "Personal context"
+  },
+  {
+   "map_id": "physical_function",
+   "missing": [
+    "gait_speed",
+    "chair_stand_5x",
+    "single_leg_stance",
+    "six_minute_walk",
+    "vo2max_measured"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "physical_function",
+    "mobility",
+    "fitness",
+    "frailty"
+   ],
+   "title": "Physical function tests"
+  },
+  {
+   "map_id": "routine_blood",
+   "missing": [
+    "hemoglobin",
+    "platelets",
+    "alt",
+    "ast",
+    "ggt",
+    "egfr",
+    "uric_acid",
+    "tsh",
+    "vitamin_d_25oh",
+    "vitamin_b12",
+    "ferritin",
+    "homocysteine"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "blood",
+    "liver",
+    "kidney",
+    "thyroid",
+    "vitamins",
+    "iron"
+   ],
+   "title": "Routine blood tests"
+  },
+  {
+   "map_id": "wellbeing",
+   "missing": [
+    "pss10",
+    "phq2"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "stress",
+    "mood",
+    "wellbeing",
+    "mental_health"
+   ],
+   "title": "Stress and mood"
+  },
+  {
+   "map_id": "womens_health",
+   "missing": [
+    "cycle_length",
+    "age_at_menarche",
+    "pregnancies",
+    "age_at_menopause",
+    "months_since_final_period"
+   ],
+   "present": [],
+   "ratio": 0.0,
+   "tags": [
+    "womens_health",
+    "reproductive",
+    "menopause",
+    "history"
+   ],
+   "title": "Reproductive history and menopause"
+  }
+ ],
+ "sets": {
+  "accepted": [
+   "E86",
+   "E87",
+   "E88",
+   "E89",
+   "E90",
+   "E91",
+   "E92"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 7,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": [
+   "UNCODED: 1",
+   "UNCODED: 2",
+   "UNCODED: 5"
+  ]
+ },
+ "sets_csv": {
+  "accepted": [
+   "E93",
+   "E94"
+  ],
+  "conflicts": [],
+  "counts": {
+   "accepted": 2,
+   "duplicate": 0,
+   "rejected": 0
+  },
+  "dropped_columns": [],
+  "dry_run": false,
+  "duplicates": [],
+  "rejected": [],
+  "warnings": []
+ },
+ "single_event": {
+  "code": {
+   "code": "1751-7",
+   "system": "loinc"
+  },
+  "effective_at": "2026-01-10T12:00:00Z",
+  "effective_basis": "document",
+  "kind": "measurement",
+  "origin": {
+   "kind": "user_upload",
+   "record_id": "a-albumin"
+  },
+  "original_text": "albumin",
+  "repeat": false,
+  "unit": "g/L",
+  "unit_original": "g/L",
+  "value_quantity": 45.0
+ },
+ "world_change": "2026-06-01 00:00:00+00:00"
+}

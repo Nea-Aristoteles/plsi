@@ -2,28 +2,27 @@
 
 from __future__ import annotations
 
+import contextlib
 import re
 import secrets
 import shutil
-from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from datetime import datetime
 from typing import Any
 
-import pydantic
 from pydantic import BaseModel
 
 from plsi.clock import now
 from plsi.errors import NotFound, ValidationError
-from plsi.files import append_jsonl_many, atomic_write_json, load_json, lock, read_jsonl
+from plsi.files import append_jsonl_many, atomic_write_json, load_json, lock
 from plsi.events import Event, NewEvent, PAYLOAD_TYPES
+from plsi.life import observed
 from plsi.life.deid import deid_subject_fields
+from plsi.life.index import LogIndex
+from plsi.life.index_rows import from_micros
 from plsi.life.models import Subject
 from plsi.paths import instance_dir, new_id, plsi_home, validate_id
-from plsi.vocab import Ethnicity, EventType, Relation, Sex
-
-
-def _retracted(events: Iterable[Event]) -> set[str]:
-    return {e.payload.target_event_id for e in events if e.type == EventType.RETRACTION}  # type: ignore[union-attr]
+from plsi.vocab import Ethnicity, EventType, ObservationKind, Relation, Sex
 
 
 def _dump(event: Event) -> dict[str, Any]:
@@ -33,15 +32,41 @@ def _dump(event: Event) -> dict[str, Any]:
     return data
 
 
+def _types(type: EventType | str | Iterable[EventType | str] | None) -> list[str]:
+    if type is None:
+        return []
+    return [EventType(t).value for t in ([type] if isinstance(type, str) else type)]
+
+
 class EventStore:
+    """The instance's append-only log. Reads and the dedupe check go through the log index (plsi.life.index): memory and
+    time depend on what a call returns, not on how many events are stored."""
+
     def __init__(self, instance: str) -> None:
         self.instance = instance
         self.dir = instance_dir(instance)
         self.path = self.dir / "events.jsonl"
+        self._index: LogIndex | None = None
 
     @property
     def subject(self) -> Subject:
         return Subject.model_validate(load_json(self.dir / "subject.json"))
+
+    @property
+    def index(self) -> LogIndex:
+        """The log index, made current with the log (built on first use; see plsi.life.index)."""
+        if self._index is None:
+            self._index = LogIndex(self.dir, self.path)
+        self._index.sync()
+        return self._index
+
+    @contextlib.contextmanager
+    def snapshot(self) -> Iterator[LogIndex]:
+        """One consistent view of the log for a series of reads: the events indexed when it began."""
+        if self._index is None:
+            self._index = LogIndex(self.dir, self.path)
+        with self._index.snapshot() as ix:
+            yield ix
 
     # -------------------------------------------------------------- writing
 
@@ -50,13 +75,17 @@ class EventStore:
         return self.append_many([NewEvent(type, payload, dedupe_key, dedupe)])[0]
 
     def append_many(self, items: Iterable[NewEvent]) -> list[tuple[str, bool]]:
-        """Append events in order under ONE lock; ids and recorded_at are tool-set. Payloads are re-validated."""
+        """Append events in order under ONE lock; ids and recorded_at are tool-set. Payloads are re-validated. An event
+        with dedupe set whose key an active event already has is not appended (its id is returned, created False)."""
+        batch = list(items)
+        _ = self.index  # a cold index is built before the lock is taken, so writers never wait on a build
         out: list[tuple[str, bool]] = []
-        new: list[dict[str, Any]] = []
+        new: list[Event] = []
         with lock(self.dir):
-            active_keys = {e.dedupe_key: e.id for e in self.events() if e.dedupe_key}
+            ix = self.index
+            active_keys = observed.active_keys(ix, [i.dedupe_key for i in batch if i.dedupe and i.dedupe_key])
             subject_id = self.subject.subject_id
-            for item in items:
+            for item in batch:
                 if item.dedupe and item.dedupe_key in active_keys:
                     out.append((active_keys[item.dedupe_key], False))
                     continue
@@ -64,42 +93,67 @@ class EventStore:
                 payload = PAYLOAD_TYPES[event_type].model_validate(item.payload.model_dump(mode="json"))
                 event = Event(id=new_id("evt"), type=event_type, recorded_at=now(), subject_id=subject_id,
                               dedupe_key=item.dedupe_key, payload=payload)
-                new.append(_dump(event))
+                new.append(event)
                 if item.dedupe_key:
                     active_keys[item.dedupe_key] = event.id
                 out.append((event.id, True))
-            append_jsonl_many(self.path, new)
+            placed = append_jsonl_many(self.path, [_dump(e) for e in new])
+            if placed:
+                ix.add([(e, off, ln) for e, (off, ln) in zip(new, placed, strict=True)])
         return out
 
     # -------------------------------------------------------------- reading
 
-    def events(self, type: EventType | str | None = None, *, active: bool = True) -> list[Event]:
-        """Events in log order from one read; active=True drops those targeted by a retraction (retraction events
-        themselves stay listed). Invalid lines raise ValidationError."""
-        events = []
-        for n, raw in enumerate(read_jsonl(self.path), 1):
-            try:
-                event = Event.model_validate(raw)
-                if payload_type := PAYLOAD_TYPES.get(event.type):
-                    event.payload = payload_type.model_validate(event.payload)
-            except pydantic.ValidationError as exc:  # refuse rather than silently skip a real event
-                raise ValidationError(f"events.jsonl record {n} is not a valid event: {exc.errors()[0]['msg']}", code="CORRUPT_EVENT") from None
-            events.append(event)
-        gone = _retracted(events) if active else set()
-        wanted = EventType(type) if type is not None else None
-        return [e for e in events if e.id not in gone and (wanted is None or e.type == wanted)]
+    def iter_events(self, type: EventType | str | Iterable[EventType | str] | None = None, *, active: bool = True,
+                    kinds: Iterable[ObservationKind | str] | None = None) -> Iterator[Event]:
+        """Events in log order, one at a time (memory does not grow with the log); `type` may be one or several types.
+        active=True drops those targeted by a retraction (retraction events themselves stay listed). An invalid line
+        raises ValidationError (CORRUPT_EVENT) when the index reads it. `kinds` keeps only observations of those kinds."""
+        ix = self.index
+        where, args = ["1"], []
+        if types := _types(type):
+            where.append(f"type IN ({','.join('?' * len(types))})")
+            args += types
+        if kinds is not None:
+            wanted = [ObservationKind(k).value for k in kinds]
+            where.append(f"kind IN ({','.join('?' * len(wanted))})")
+            args += wanted
+        if active:
+            where.append("gone=0")
+        cur = ix.conn.execute(f"SELECT seq, id, off, ln FROM events WHERE {' AND '.join(where)} ORDER BY seq", args)
+        with open(self.path, "rb") as fh:
+            while page := cur.fetchmany(2048):
+                for seq, event_id, off, ln in page:
+                    yield ix.event_at(seq, event_id, off, ln, fh)
+
+    def events(self, type: EventType | str | Iterable[EventType | str] | None = None, *, active: bool = True) -> list[Event]:
+        """`iter_events` as a list: use it when the result is small (one type of policy events), not for the whole log."""
+        return list(self.iter_events(type, active=active))
+
+    def load(self, rows: Iterable[Any]) -> list[Event]:
+        """Events for index rows (anything with seq, id, off, ln), in the order given."""
+        ix = self.index
+        with open(self.path, "rb") as fh:
+            return [ix.event_at(r.seq, r.id, r.off, r.ln, fh) for r in rows]
 
     def get(self, event_id: str) -> Event:
-        for event in self.events(active=False):
-            if event.id == event_id:
-                return event
-        raise NotFound(f"event {event_id!r} not found", code="EVENT_NOT_FOUND")
+        ix = self.index
+        row = ix.conn.execute("SELECT seq, id, off, ln FROM events WHERE id=? ORDER BY seq LIMIT 1", (event_id,)).fetchone()
+        if row is None:
+            raise NotFound(f"event {event_id!r} not found", code="EVENT_NOT_FOUND")
+        return ix.event_at(*row)
 
     def retracted_ids(self) -> set[str]:
-        return _retracted(self.events(EventType.RETRACTION))
+        return {t for (t,) in self.index.conn.execute("SELECT target FROM retractions")}
 
     def observations(self) -> list[Event]:
+        """Every active observation as a list: O(history) memory, kept for small histories and tests; the engine's own
+        reads use `iter_events` and the index lookups in plsi.life.observed."""
         return self.events(EventType.OBSERVATION)
+
+    def world_change(self) -> datetime | None:
+        """Latest recorded_at of any observation or retraction, from the index (no log read)."""
+        return self.index.world_change()
 
     # -------------------------------------------------------------- subject
 
@@ -198,28 +252,55 @@ def delete_instance(instance: str, confirm: str) -> dict[str, Any]:
             "events_removed": sum(counts["by_type"].values())}
 
 
-def list_events(instance: str, type: EventType | str | None = None, kind: str | None = None, limit: int | None = None) -> dict[str, Any]:
-    """`events list`: newest last; optional event type, observation kind and limit (last N)."""
-    events = EventStore(instance).events(active=False)
-    gone, wanted = _retracted(events), EventType(type) if type is not None else None
-    events = [
-        {**_dump(e), "retracted": e.id in gone}
-        for e in events
-        if (wanted is None or e.type == wanted)
-        and (kind is None or (e.type == EventType.OBSERVATION and e.payload.kind == kind))  # type: ignore[union-attr]
-    ]
+def list_events(instance: str, type: EventType | str | None = None, kind: str | None = None, limit: int | None = None,
+                after: str | None = None) -> dict[str, Any]:
+    """`events list`: newest last; optional event type, observation kind and limit (last N).
+
+    `after` pages forward instead: the first `limit` events (same filters) that follow event id `after` (`start` = from
+    the first event), oldest first, with `next_after` (pass it as the next `after`) while more remain; memory depends on
+    `limit`, not on the log."""
+    store = EventStore(instance)
+    ix = store.index
+    where, args = ["1"], []
+    if type is not None:
+        where.append("type=?")
+        args.append(EventType(type).value)
+    if kind is not None:
+        where.append("kind=?")
+        args.append(str(kind))
+    if after is not None:
+        if limit is None or limit <= 0:
+            raise ValidationError("--after needs a --limit above zero", code="USAGE")
+        row = (0,) if after == "start" else ix.conn.execute("SELECT seq FROM events WHERE id=? ORDER BY seq LIMIT 1", (after,)).fetchone()
+        if row is None:
+            raise NotFound(f"event {after!r} not found", code="EVENT_NOT_FOUND")
+        where.append("seq>?")
+        args.append(row[0])
+    order = "DESC" if after is None else "ASC"
+    sql = f"SELECT seq, id, off, ln, gone FROM events WHERE {' AND '.join(where)} ORDER BY seq {order}"
     if limit is not None:
-        events = events[-limit:] if limit > 0 else []
-    return {"count": len(events), "events": events}
+        if limit <= 0:
+            return {"count": 0, "events": []}
+        sql += f" LIMIT {int(limit) + (after is not None)}"
+    rows = ix.conn.execute(sql, args).fetchall()
+    more = after is not None and len(rows) > limit  # type: ignore[operator]
+    rows = rows[:limit] if after is not None else rows[::-1]
+    with open(store.path, "rb") as fh:
+        events = [{**_dump(ix.event_at(seq, event_id, off, ln, fh)), "retracted": bool(gone)} for seq, event_id, off, ln, gone in rows]
+    out: dict[str, Any] = {"count": len(events), "events": events}
+    if more:
+        out["next_after"] = events[-1]["id"]
+    return out
 
 
 def event_counts(instance: str) -> dict[str, Any]:
-    events = EventStore(instance).events(active=False)
-    gone = _retracted(events)
+    ix = EventStore(instance).index
+    c = ix.conn
+    last = c.execute("SELECT rec FROM events ORDER BY seq DESC LIMIT 1").fetchone()
+    by_type = {EventType(t): n for t, n in c.execute("SELECT type, n FROM typecount ORDER BY first")}
     return {
-        "by_type": dict(Counter(e.type for e in events)),
-        "retracted": len(gone),
-        "active_observations": sum(1 for e in events if e.type == EventType.OBSERVATION and e.id not in gone),
-        "last_recorded_at": events[-1].recorded_at.isoformat() if events else None,
+        "by_type": by_type,
+        "retracted": c.execute("SELECT COUNT(*) FROM retractions").fetchone()[0],
+        "active_observations": by_type.get(EventType.OBSERVATION, 0) - c.execute("SELECT COUNT(*) FROM events WHERE gone=1 AND type='observation'").fetchone()[0],
+        "last_recorded_at": from_micros(last[0]).isoformat() if last else None,
     }
-

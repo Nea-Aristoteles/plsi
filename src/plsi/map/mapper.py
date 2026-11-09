@@ -11,15 +11,15 @@ from datetime import datetime
 from typing import Any
 
 from plsi import clock, errors, files, paths
-from plsi.events import Event
 from plsi.life.models import Subject
-from plsi.map.models import CareContext, CoordinateValue, Gap, MapContract, MapCoordinate, ObservedValue, StateDocument
+from plsi.map.models import UNMAPPED_CAP, CareContext, CoordinateValue, Gap, MapContract, MapCoordinate, ObservedValue, StateDocument
 from plsi.models import parse
+from plsi.life import observed
 from plsi.life.store import EventStore
 from plsi.map import registry
 from plsi.map import storyline as _storyline
 from plsi.map.projection import Projection, hybrid, set_items
-from plsi.vocab import CoordinateKind, EventType, ObservationKind, ValueStatus
+from plsi.vocab import CoordinateKind, ObservationKind, ValueStatus
 
 FREE_TEXT_KINDS = {ObservationKind.GOAL, ObservationKind.PREFERENCE, ObservationKind.LIFESTYLE}  # set items with no code system
 LOCAL_MAPS = frozenset({"personal_context"})  # goals and preferences: free text about the user's life, never sent
@@ -48,16 +48,20 @@ def _gaps(c: MapCoordinate, v: CoordinateValue) -> list[Gap]:
 
 
 def build_state(instance: str, m: MapContract, as_of: datetime | None = None) -> StateDocument:
-    """Pure projection (writes nothing) of the ACTIVE observations with effective_at <= as_of (default clock.now()).
+    """Pure projection (writes nothing) of the ACTIVE observations with effective_at <= as_of (default clock.now()),
+    read through the event index from one consistent view; memory does not grow with the history.
     Returns a sealed() StateDocument (generated_at = clock.now())."""
     as_of = as_of or clock.now()
     store = EventStore(instance)
-    proj = Projection(store, m, as_of)
-    coordinates = {c.id: proj.value(c) for c in m.coordinates}
+    with store.snapshot():
+        proj = Projection(store, m, as_of)
+        coordinates = {c.id: proj.value(c) for c in m.coordinates}
+        unmapped, total = proj.unmapped(UNMAPPED_CAP)
     return StateDocument(
         subject_id=store.subject.subject_id, map_id=m.id, map_version=m.map_version, map_hash=m.compute_hash(),
         as_of=as_of, generated_at=clock.now(), coordinates=coordinates,
-        gaps=[g for c in m.coordinates for g in _gaps(c, coordinates[c.id])], unmapped_observations=proj.unmapped(),
+        gaps=[g for c in m.coordinates for g in _gaps(c, coordinates[c.id])], unmapped_observations=unmapped,
+        unmapped_count=total if total > len(unmapped) else None,
     ).sealed()
 
 
@@ -104,47 +108,54 @@ def context(instance: str, as_of: datetime | None = None) -> CareContext:
     """care_context sets (active medications, conditions, allergies) — Policy's only view of them.
     Uncoded items are kept (the care_context projection adds a gap suggesting normalization)."""
     as_of = as_of or clock.now()
-    events = [e for e in EventStore(instance).observations() if e.payload.effective_at <= as_of]
-    return CareContext(medications=set_items(events, ObservationKind.MEDICATION, as_of),
-                       conditions=set_items(events, ObservationKind.CONDITION, as_of),
-                       allergies=set_items(events, ObservationKind.ALLERGY, as_of))
+    store = EventStore(instance)
+    with store.snapshot():
+        return CareContext(medications=set_items(store, ObservationKind.MEDICATION, as_of),
+                           conditions=set_items(store, ObservationKind.CONDITION, as_of),
+                           allergies=set_items(store, ObservationKind.ALLERGY, as_of))
 
 
-def coordinate_observations(instance: str, m: MapContract, coordinate_id: str) -> list[ObservedValue]:
+def coordinate_observations(instance: str, m: MapContract, coordinate_id: str, since: datetime | None = None,
+                            until: datetime | None = None) -> list[ObservedValue]:
     """Every candidate value of one measured or derived coordinate, oldest first, for scoring (converted through `m`;
     derived: one per input-complete day, recorded_at = max input recorded_at, basis assumed if any input is).
-    Raises errors.NotFound for an unknown coordinate; set coordinates -> ValidationError."""
+    since/until keep only values effective inside [since, until] (a window needs no other reading, so a coordinate with
+    millions of readings is read for that window only). Raises errors.NotFound for an unknown coordinate; set
+    coordinates -> ValidationError."""
     c = m.coordinate(coordinate_id)
     if c is None:
         raise errors.NotFound(f"map {m.id} has no coordinate {coordinate_id!r}", code="COORDINATE_NOT_FOUND")
     if c.kind == CoordinateKind.SET:
         raise errors.ValidationError(f"{coordinate_id} is a set coordinate")
-    proj = Projection(EventStore(instance), m, None)
-    return [ObservedValue(event_ids=p.event_ids, effective_at=p.t, recorded_at=p.recorded_at, effective_basis=p.basis,
-                          value=p.coordinate_value(c)) for p in proj.points(c.id)]
+    store = EventStore(instance)
+    with store.snapshot():
+        proj = Projection(store, m, None)
+        return [ObservedValue(event_ids=p.event_ids, effective_at=p.t, recorded_at=p.recorded_at, effective_basis=p.basis,
+                              value=p.coordinate_value(c)) for p in proj.points(c.id, since=since, until=until)]
 
 
-def coverage(instance: str, m: MapContract, events: list[Event] | None = None) -> list[str]:
+def coverage(instance: str, m: MapContract, store: EventStore | None = None) -> list[str]:
     """Coordinate ids with a recent value (sets: any item recorded); used by registry.select, computes no clock.
-    events: the instance's active observations when already read."""
+    store: the instance's store when the caller keeps one view across several maps."""
     as_of = clock.now()
-    proj = Projection(EventStore(instance), m, as_of, events)
-    out = []
-    for c in m.coordinates:
-        if c.kind == CoordinateKind.SET:
-            ok = any(e.payload.kind == c.collects for e in proj.events)
-        else:
-            days = proj.day_set(c)
-            ok = bool(days) and (as_of.date() - max(days)).days <= c.recency_days
-        if ok:
-            out.append(c.id)
+    store = store or EventStore(instance)
+    with store.snapshot():
+        proj = Projection(store, m, as_of)
+        out = []
+        for c in m.coordinates:
+            if c.kind == CoordinateKind.SET:
+                ok = observed.has_kind(store.index, ObservationKind(c.collects).value, proj.hi)
+            else:
+                days = proj.day_set(c)
+                ok = bool(days) and (as_of.date() - max(days)).days <= c.recency_days
+            if ok:
+                out.append(c.id)
     return out
 
 
 def last_world_change(instance: str) -> datetime | None:
     """Max recorded_at over observation and retraction events (G1: latest.json must be generated at or after it)."""
-    times = [e.recorded_at for e in EventStore(instance).events(active=False) if e.type in (EventType.OBSERVATION, EventType.RETRACTION)]
-    return max(times, default=None)
+    return EventStore(instance).world_change()
 
 
 def subject(instance: str) -> Subject:
